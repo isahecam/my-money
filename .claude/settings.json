@@ -1,0 +1,36 @@
+{
+  "worktree": {
+    "baseRef": "head"
+  },
+  "attribution": {
+    "commit": "",
+    "pr": ""
+  },
+  "permissions": {
+    "allow": [
+      "Bash(pnpm build)",
+      "Bash(pnpm test *)",
+      "Bash(pnpm typecheck)",
+      "Bash(git status)",
+      "Bash(git diff)"
+    ],
+    "ask": [
+      "Bash(git push *)",
+      "Bash(git commit *)",
+      "Bash(pnpm drizzle-kit generate *)",
+      "Bash(pnpm drizzle-kit migrate *)",
+      "Bash(pnpm db:generate)",
+      "Bash(pnpm db:migrate)"
+    ],
+    "deny": [
+      "Read(.env)",
+      "Read(.env.*)",
+      "Edit(.env)",
+      "Edit(.env.*)",
+      "Bash(git commit * --no-verify*)",
+      "Bash(git commit -n *)",
+      "Edit(./drizzle/**)",
+      "Bash(pnpm drizzle-kit push *)"
+    ]
+  }
+}
