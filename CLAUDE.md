@@ -48,4 +48,4 @@ Use pnpm only.
 
 - `.env*` (including `.env.example`) can't be read or edited. Required vars: `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `DATABASE_URL`, `DATABASE_URL_UNPOOLED`.
 - `drizzle/` (generated migrations) can't be edited, and `drizzle-kit push` is denied. Change the schema, then `pnpm db:generate` → `pnpm db:migrate`. Both commands ask for approval.
-- `.agents/skills/` is vendored (skills CLI, pinned in `skills-lock.json`), and `.claude/skills/*` are symlinks to it. Don't edit or format either; both are in oxfmt's `ignorePatterns`.
+- `.agents/skills/` is vendored (skills CLI, pinned in `skills-lock.json`), and `.claude/skills/` is a committed copy of it (locally a junction, so both change together). Don't edit or format either; both are in oxfmt's `ignorePatterns`.
