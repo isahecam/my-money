@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "nextjs", "react", "jsx-a11y", "import"],
+  "jsPlugins": ["@shadcn/lint"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "warn",
+    "perf": "warn"
+  },
+  "rules": {
+    "react/react-in-jsx-scope": "off",
+    "import/no-unassigned-import": ["warn", { "allow": ["**/*.css", "dotenv/config"] }],
+    "unicorn/require-module-specifiers": "off",
+    "shadcn/no-arbitrary-values": ["error", { "allow": ["layout"] }],
+    "shadcn/no-inline-styles": "error",
+    "shadcn/no-raw-colors": "error",
+    "shadcn/no-restyle": ["error", { "allow": ["layout"] }],
+    "shadcn/no-unknown-classes": "warn",
+    "shadcn/require-static-classes": "error"
+  },
+  "env": { "browser": true, "node": true },
+  "ignorePatterns": ["drizzle/**", "components/ui/**"]
+}
