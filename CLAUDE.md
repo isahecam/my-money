@@ -1,0 +1,51 @@
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+@AGENTS.md
+
+## Project
+
+"My Money": a personal finance app. Next.js 16 App Router with `typedRoutes`, React 19 with the React Compiler on, Tailwind v4 via the `@tailwindcss/turbopack` loader. User-facing text is in Spanish (`<html lang="es">`).
+
+## Commands
+
+Use pnpm only.
+
+- `pnpm dev` / `pnpm build`
+- `pnpm typecheck`: runs `next typegen` first, which generates the global route types (`LayoutProps<"/">`, `PageProps`, ...). Don't import or redefine them.
+- `pnpm lint` / `pnpm lint:fix` (oxlint), `pnpm fmt` / `pnpm fmt:check` (oxfmt). For one file: `pnpm oxlint <path>`, `pnpm oxfmt <path>`.
+- `pnpm knip`: unused files, exports and deps. Mark an export that is unused on purpose with a `/** @lintignore */` JSDoc tag.
+- No test runner is set up yet.
+
+## Architecture
+
+- **Auth**: Better Auth, server config in `lib/auth.ts`, client in `lib/auth-client.ts`, handler at `app/api/auth/[...all]`. Email/password only, sign-up disabled. Read `docs/BETTER_AUTH_CLIENT_VS_API.md` before writing auth code: user actions go through `authClient` (rate limiting), session reads and permission checks through `auth.api` on the server.
+- **Route protection**: there is no `proxy.ts`. Each server page checks `auth.api.getSession({ headers: await headers() })` and redirects.
+- **DB**: Drizzle on Neon's HTTP driver (`db/index.ts`). Schema in `db/schema/`, re-exported from `db/schema/index.ts`; table names are plural (the Better Auth adapter uses `usePlural`). The app uses `DATABASE_URL` (pooled), drizzle-kit uses `DATABASE_URL_UNPOOLED` (direct).
+- **Code layout**: domain code goes in `features/<domain>/`; shared components in `components/`.
+- **Forms**: Formisch (`@formisch/react`) with Valibot schemas.
+- The dashboard still uses hard-coded sample data.
+
+## Git hooks (lefthook)
+
+- pre-commit: oxlint `--fix` and oxfmt on staged files, then restages them.
+- commit-msg: commitlint. Conventional Commits, header ≤ 72 chars. The scope is optional but must be one of `app, ui, api, auth, db, config, deps, tooling, release`. A breaking change needs both `!` in the header and a `BREAKING CHANGE:` footer.
+- pre-push: `typecheck` and `knip`.
+- Never bypass the hooks (`--no-verify` / `-n` is denied).
+
+## UI conventions
+
+- shadcn style `base-sera` on **Base UI** (`@base-ui/react`), not Radix. Icons come from `lucide-react`. Add components with `pnpm shadcn add <name>`; they go into `components/ui/`, which lint and format skip. Treat that folder as generated code.
+- `cn` comes from the `cn` package and is re-exported by `@/lib/utils`. Import alias: `@/*` → repo root.
+- Theme tokens live as CSS variables in `app/globals.css` (oklch, with a `.dark` class variant). The `@shadcn/lint` rules are errors, so:
+  - use semantic token classes (`bg-primary`, `text-muted-foreground`), never raw colors;
+  - no inline `style`, no arbitrary values (`w-[13px]`), and no restyling of shadcn components except for layout;
+  - class strings must be static. Branch with `cn(...)` or variants, not template strings.
+- oxfmt sorts imports and Tailwind classes (including inside `cn`), so don't hand-order them.
+
+## Guardrails
+
+- `.env*` (including `.env.example`) can't be read or edited. Required vars: `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `DATABASE_URL`, `DATABASE_URL_UNPOOLED`.
+- `drizzle/` (generated migrations) can't be edited, and `drizzle-kit push` is denied. Change the schema, then `pnpm db:generate` → `pnpm db:migrate`. Both commands ask for approval.
+- `.agents/skills/` is vendored (skills CLI, pinned in `skills-lock.json`), and `.claude/skills/*` are symlinks to it. Don't edit or format either; both are in oxfmt's `ignorePatterns`.
