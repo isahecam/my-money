@@ -69,7 +69,9 @@ export function CreateTransactionDrawerDialog() {
             <DialogTitle>{TITLE}</DialogTitle>
             <DialogDescription>{DESCRIPTION}</DialogDescription>
           </DialogHeader>
-          <div className="-mx-6 min-h-0 flex-1 overflow-y-auto px-6">{formContent}</div>
+          <div className="min-h-0 flex-1 scroll-fade scrollbar-none overflow-y-auto px-6 py-3">
+            {formContent}
+          </div>
           <DialogFooter>
             <DialogClose render={<Button variant="outline" />}>Cancelar</DialogClose>
             {submitButton}
@@ -91,7 +93,7 @@ export function CreateTransactionDrawerDialog() {
           <DrawerTitle>{TITLE}</DrawerTitle>
           <DrawerDescription>{DESCRIPTION}</DrawerDescription>
         </DrawerHeader>
-        <div className="flex-1 overflow-y-auto p-4">{formContent}</div>
+        <div className="flex-1 scroll-fade scrollbar-none overflow-y-auto p-4">{formContent}</div>
         <DrawerFooter>
           {submitButton}
           <DrawerClose render={<Button variant="outline" />}>Cancelar</DrawerClose>
