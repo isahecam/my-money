@@ -8,5 +8,7 @@ export default defineConfig({
   test: {
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
+    // Its ESM build imports `next/headers` without an extension, which Node can't resolve.
+    server: { deps: { inline: ["@next-safe-action/adapter-better-auth"] } },
   },
 });

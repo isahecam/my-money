@@ -7,7 +7,7 @@ import { auth } from "@/lib/auth";
 // Secure check against the DB, deduped per render pass.
 export const getSession = cache(async () => auth.api.getSession({ headers: await headers() }));
 
-// Call at the top of every protected page, Server Action and Route Handler.
+// Call at the top of every protected page and Route Handler. Server Actions use `authActionClient`.
 export const verifySession = cache(async () => {
   const session = await getSession();
 
