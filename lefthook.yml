@@ -23,3 +23,5 @@ pre-push:
       run: pnpm typecheck
     - name: knip
       run: pnpm knip
+    - name: test
+      run: pnpm test --run

@@ -16,7 +16,7 @@ Use pnpm only.
 - `pnpm typecheck`: runs `next typegen` first, which generates the global route types (`LayoutProps<"/">`, `PageProps`, ...). Don't import or redefine them.
 - `pnpm lint` / `pnpm lint:fix` (oxlint), `pnpm fmt` / `pnpm fmt:check` (oxfmt). For one file: `pnpm oxlint <path>`, `pnpm oxfmt <path>`.
 - `pnpm knip`: unused files, exports and deps. Mark an export that is unused on purpose with a `/** @lintignore */` JSDoc tag.
-- No test runner is set up yet.
+- `pnpm test`: Vitest in watch mode (`pnpm test --run` runs once). jsdom + Testing Library, set up per Next.js `docs/01-app/02-guides/testing/vitest.md`. Tests sit next to the file they cover (`*.test.ts(x)`). Async Server Components can't be unit tested yet; Next recommends E2E for them.
 
 ## Architecture
 
