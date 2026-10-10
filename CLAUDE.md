@@ -21,7 +21,10 @@ Use pnpm only.
 ## Architecture
 
 - **Auth**: Better Auth, server config in `lib/auth.ts`, client in `lib/auth-client.ts`, handler at `app/api/auth/[...all]`. Email/password only, sign-up disabled. Read `docs/BETTER_AUTH_CLIENT_VS_API.md` before writing auth code: user actions go through `authClient` (rate limiting), session reads and permission checks through `auth.api` on the server.
-- **Route protection**: there is no `proxy.ts`. Each server page checks `auth.api.getSession({ headers: await headers() })` and redirects.
+- **Route protection** (Next.js `docs/01-app/02-guides/authentication.md` + Better Auth Next.js integration), two layers:
+  - `proxy.ts`: optimistic check only. Reads the cookie with `getSessionCookie` (no DB) and redirects to `/sign-in`. Public routes go in its `publicRoutes` set, or they redirect to themselves forever. Don't redirect signed-in users away from `/sign-in` here: a stale cookie would loop with the page check.
+  - DAL (`features/auth/dal.ts`): the real check. Every protected page, Server Action and Route Handler calls `await verifySession()` first (validates against the DB and redirects). Use `getSession()` where a missing session should not redirect (e.g. `/sign-in`, shell UI). Both are wrapped in React `cache`, so repeated calls in one render hit the DB once.
+  - Never protect in a layout: layouts don't re-render on navigation (Partial Rendering) and don't stop child segments from rendering. Layouts may read the session for display only.
 - **DB**: Drizzle on Neon's HTTP driver (`db/index.ts`). Schema in `db/schema/`, re-exported from `db/schema/index.ts`; table names are plural (the Better Auth adapter uses `usePlural`). The app uses `DATABASE_URL` (pooled), drizzle-kit uses `DATABASE_URL_UNPOOLED` (direct).
 - **Code layout**: domain code goes in `features/<domain>/`; shared components in `components/`.
 - **Forms**: Formisch (`@formisch/react`) with Valibot schemas.
