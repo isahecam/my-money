@@ -27,7 +27,6 @@ export function SignInForm() {
                 aria-invalid={field.errors !== null}
                 autoComplete="email"
                 placeholder="tu@correo.com"
-                disabled={form.isSubmitting}
               />
               {field.errors && <FieldError errors={field.errors.map((message) => ({ message }))} />}
             </Field>
@@ -44,7 +43,6 @@ export function SignInForm() {
                 value={field.input ?? ""}
                 aria-invalid={field.errors !== null}
                 autoComplete="current-password"
-                disabled={form.isSubmitting}
               />
               {field.errors && <FieldError errors={field.errors.map((message) => ({ message }))} />}
             </Field>

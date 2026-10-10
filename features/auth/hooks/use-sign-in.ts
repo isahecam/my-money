@@ -12,7 +12,6 @@ export function useSignIn() {
   const form = useForm({
     schema: signInSchema,
     initialInput: { email: "", password: "" },
-    validate: "blur",
   });
 
   const handleSubmit: SubmitHandler<typeof signInSchema> = async ({ email, password }) => {
