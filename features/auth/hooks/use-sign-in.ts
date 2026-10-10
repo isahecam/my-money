@@ -24,7 +24,14 @@ export function useSignIn() {
           router.refresh();
         },
         onError: ({ error, response }) => {
-          toast.add({ type: "error", title: getErrorMessage(error, response) });
+          toast.add({
+            type: "error",
+            title: getErrorMessage(
+              error,
+              response,
+              "No se pudo iniciar sesión. Inténtalo de nuevo.",
+            ),
+          });
         },
       },
     );
