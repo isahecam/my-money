@@ -178,6 +178,9 @@ importers:
       '@neondatabase/serverless':
         specifier: ^1.2.0
         version: 1.2.0
+      '@next-safe-action/adapter-better-auth':
+        specifier: ^0.1.7
+        version: 0.1.7(better-auth@1.7.7(drizzle-kit@0.31.11)(drizzle-orm@0.45.3(@neondatabase/serverless@1.2.0)(kysely@0.29.6))(next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vitest@5.0.3(@types/node@24.19.1)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.4(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))))(next-safe-action@8.7.3(next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))
       better-auth:
         specifier: ^1.7.7
         version: 1.7.7(drizzle-kit@0.31.11)(drizzle-orm@0.45.3(@neondatabase/serverless@1.2.0)(kysely@0.29.6))(next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vitest@5.0.3(@types/node@24.19.1)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.4(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)))
@@ -199,6 +202,9 @@ importers:
       next:
         specifier: 16.4.0
         version: 16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      next-safe-action:
+        specifier: ^8.7.3
+        version: 8.7.3(next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
       react:
         specifier: 19.3.0
         version: 19.3.0
@@ -1392,6 +1398,14 @@ packages:
   '@neondatabase/serverless@1.2.0':
     resolution: {integrity: sha512-tnaqgixUengZQNd9ZrS3ytQfamJzLKY8QxgqWQTNHHtB+KrFQWk77JTbbpg4RD+J3qE4eO2lVytvGDX5Kj6FdQ==}
     engines: {node: '>=19.0.0'}
+
+  '@next-safe-action/adapter-better-auth@0.1.7':
+    resolution: {integrity: sha512-WNcv3eO0Zhgajv6Zl2ug9CffW0Q8NvXHQlyO1l61AA5LXQ8ZPwgUA0w5cnzxK2SdvZzNsxPDqTExDjg7WTIOVQ==}
+    engines: {node: '>=18.17'}
+    peerDependencies:
+      better-auth: '>= 1.5.0'
+      next: '>= 15.1.0'
+      next-safe-action: '>= 8.4.0'
 
   '@next/env@16.4.0':
     resolution: {integrity: sha512-pyLlT5oafGlX8X7xjgGNXz5dNIDSxREm+qD6i9VLSZiZFopA/XWl8NM/KPmLx/8EG/++c49iid3gNWSQW1+2dQ==}
@@ -3652,6 +3666,14 @@ packages:
     resolution: {integrity: sha512-NMPBRMJgiQHjbd8phG3Vebdx4kZ1H121rbl5IkMqeOsahptB9BKo/d7oJ3zTXqTgagn2bWlNSXkh0QUGM31RYg==}
     engines: {node: '>=18'}
 
+  next-safe-action@8.7.3:
+    resolution: {integrity: sha512-tz6wMMBOSGyEclSDChpj5izLLErUbwqcufXN4a6lyD83pgPni9GWVniLH0zEzPWcKIkkyEiQyrjOhWcqxBKy6A==}
+    engines: {node: '>=18.17'}
+    peerDependencies:
+      next: '>= 14.0.0'
+      react: '>= 18.2.0'
+      react-dom: '>= 18.2.0'
+
   next@16.4.0:
     resolution: {integrity: sha512-N2C+9q89Z/oLrsepSRS4jRMtwmUZAoZuAHU0e9T6+sAB5DdhADmrnOW+zjYijlrYFmVfmQhGVGy9eMFoB7UgKg==}
     engines: {node: '>=20.9.0'}
@@ -5358,6 +5380,12 @@ snapshots:
 
   '@neondatabase/serverless@1.2.0': {}
 
+  '@next-safe-action/adapter-better-auth@0.1.7(better-auth@1.7.7(drizzle-kit@0.31.11)(drizzle-orm@0.45.3(@neondatabase/serverless@1.2.0)(kysely@0.29.6))(next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vitest@5.0.3(@types/node@24.19.1)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.4(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1))))(next-safe-action@8.7.3(next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))':
+    dependencies:
+      better-auth: 1.7.7(drizzle-kit@0.31.11)(drizzle-orm@0.45.3(@neondatabase/serverless@1.2.0)(kysely@0.29.6))(next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)(vitest@5.0.3(@types/node@24.19.1)(jsdom@30.1.2(@noble/hashes@2.4.0))(vite@8.3.4(@types/node@24.19.1)(esbuild@0.28.2)(jiti@2.7.0)(tsx@4.23.15)(yaml@2.9.1)))
+      next: 16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      next-safe-action: 8.7.3(next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+
   '@next/env@16.4.0': {}
 
   '@next/swc-darwin-arm64@16.4.0':
@@ -6993,6 +7021,12 @@ snapshots:
   negotiator@1.1.0:
     dependencies:
       content-type: 2.1.0
+
+  next-safe-action@8.7.3(next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0))(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
+    dependencies:
+      next: 16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0)
+      react: 19.3.0
+      react-dom: 19.3.0(react@19.3.0)
 
   next@16.4.0(@babel/core@7.29.7)(@types/node@24.19.1)(babel-plugin-react-compiler@1.0.0)(react-dom@19.3.0(react@19.3.0))(react@19.3.0):
     dependencies:
