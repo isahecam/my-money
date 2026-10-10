@@ -33,7 +33,7 @@ Use pnpm only.
 ## Comments and language
 
 - Comments are in English, short and concise. Only add one when it explains something the code can't (the why, a non-obvious constraint), never to restate the code.
-- Exported functions, hooks, components and types get a JSDoc block (`/** ... */`): a one-line summary in the imperative or third person, then tags only when they add information. TypeScript already carries the types, so no `{type}` in tags. Use `@param` and `@returns` only for non-obvious meaning, plus `@example`, `@see` and `@deprecated` when they apply.
+- Use a JSDoc block (`/** ... */`) only where documentation is needed: behavior, constraints or usage that the name and types don't make clear. Not every export needs one. Start with a one-line summary, then add tags only when they add information. TypeScript already carries the types, so no `{type}` in tags. Use `@param` and `@returns` only for non-obvious meaning, plus `@example`, `@see` and `@deprecated` when they apply.
 - Inside function bodies, use single-line `//` comments.
 - Developer-facing messages (thrown errors, script output, env validation) are in English. User-facing UI text is in Spanish.
 
