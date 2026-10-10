@@ -30,6 +30,13 @@ Use pnpm only.
 - **Forms**: Formisch (`@formisch/react`) with Valibot schemas.
 - The dashboard still uses hard-coded sample data.
 
+## Comments and language
+
+- Comments are in English, short and concise. Only add one when it explains something the code can't (the why, a non-obvious constraint), never to restate the code.
+- Exported functions, hooks, components and types get a JSDoc block (`/** ... */`): a one-line summary in the imperative or third person, then tags only when they add information. TypeScript already carries the types, so no `{type}` in tags. Use `@param` and `@returns` only for non-obvious meaning, plus `@example`, `@see` and `@deprecated` when they apply.
+- Inside function bodies, use single-line `//` comments.
+- Developer-facing messages (thrown errors, script output, env validation) are in English. User-facing UI text is in Spanish.
+
 ## Git hooks (lefthook)
 
 - pre-commit: oxlint `--fix` and oxfmt on staged files, then restages them.
