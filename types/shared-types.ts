@@ -1,7 +1,7 @@
 import type { LucideIcon } from "lucide-react";
 import type { Route } from "next";
 
-export type NavItem = {
+type NavItem = {
   label: string;
   route: Route;
   icon: LucideIcon;
