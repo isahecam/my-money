@@ -1,9 +1,8 @@
 "use client";
 
-import { Form, reset } from "@formisch/react";
-import type { SubmitHandler } from "@formisch/react";
+import { Form } from "@formisch/react";
 import { PlusIcon } from "lucide-react";
-import { useId, useState } from "react";
+import { useId } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,10 +26,8 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer";
 import { Spinner } from "@/components/ui/spinner";
-import { toast } from "@/components/ui/toast";
 import { TransactionForm } from "@/features/transactions/components/transaction-form";
 import { useCreateTransaction } from "@/features/transactions/hooks/use-create-transaction";
-import { TransactionSchema } from "@/features/transactions/schemas/transaction-schema";
 import { useIsMobile } from "@/hooks/use-mobile";
 
 const TITLE = "Nuevo movimiento";
@@ -38,18 +35,9 @@ const DESCRIPTION = "Registra un ingreso o un gasto.";
 
 export function CreateTransactionDrawerDialog() {
   const formId = useId();
-  const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
 
-  const { ...form } = useCreateTransaction();
-
-  // TODO: replace with the create Server Action.
-  const handleSubmit: SubmitHandler<typeof TransactionSchema> = (e) => {
-    console.log("Submitted:", e);
-    toast.add({ type: "success", title: "Movimiento registrado." });
-    setOpen(false);
-    reset(form);
-  };
+  const { form, open, setOpen, handleSubmit, isPending } = useCreateTransaction();
 
   const trigger = <Button size="sm" />;
   const triggerContent = (
@@ -66,8 +54,8 @@ export function CreateTransactionDrawerDialog() {
   );
 
   const submitButton = (
-    <Button type="submit" form={formId} disabled={form.isSubmitting}>
-      {form.isSubmitting && <Spinner data-icon="inline-start" />}
+    <Button type="submit" form={formId} disabled={isPending}>
+      {isPending && <Spinner data-icon="inline-start" />}
       Guardar
     </Button>
   );
