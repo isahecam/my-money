@@ -25,6 +25,54 @@
       "skillPath": "better-auth/emailAndPassword/SKILL.md",
       "computedHash": "ac9f9b0a549390f157ec62f5421a0bc90ac622c7e425af13155953847e0b68ea"
     },
+    "safe-action-advanced": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-advanced/SKILL.md",
+      "computedHash": "a72fff2ff4303f59b17b44c6d25635692e94046e665861c421f8ca85a911a3ed"
+    },
+    "safe-action-better-auth": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-better-auth/SKILL.md",
+      "computedHash": "9ef37dcbe72fa8888e3da6a20561fc19997dda3707525f5a2aab6f5ca0c54818"
+    },
+    "safe-action-client": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-client/SKILL.md",
+      "computedHash": "505d60a8ba390ce08b164d7bacb01eb680975cc16333b3c6ede0245ab850764a"
+    },
+    "safe-action-forms": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-forms/SKILL.md",
+      "computedHash": "95236934f9a886bc4ea108b3ec29aa11e3564d5121b91f3636fd25eb6dd093fe"
+    },
+    "safe-action-hooks": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-hooks/SKILL.md",
+      "computedHash": "cf3f0818166756563b1fdcbe82d63e694bda3b3ccaefd8f081c3e800a8d5c4ad"
+    },
+    "safe-action-middleware": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-middleware/SKILL.md",
+      "computedHash": "8696a435b4d8065817b0a458c89b916d866764ab3b8f87079baf60110c6d7f70"
+    },
+    "safe-action-testing": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-testing/SKILL.md",
+      "computedHash": "3da01770a83c6a8b71e4fc6759cc0f5344508f52c49d9b7bc81d3dc743180d30"
+    },
+    "safe-action-validation-errors": {
+      "source": "next-safe-action/skills",
+      "sourceType": "github",
+      "skillPath": "skills/safe-action-validation-errors/SKILL.md",
+      "computedHash": "4f2492f4789a3704bb0e2e5794a45947a75e41b7d2fea67a25a9ac23f9d00d24"
+    },
     "shadcn": {
       "source": "shadcn/ui",
       "sourceType": "github",
