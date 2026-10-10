@@ -26,7 +26,7 @@ Use pnpm only.
   - DAL (`features/auth/dal.ts`): the real check. Every protected page, Server Action and Route Handler calls `await verifySession()` first (validates against the DB and redirects). Use `getSession()` where a missing session should not redirect (e.g. `/sign-in`, shell UI). Both are wrapped in React `cache`, so repeated calls in one render hit the DB once.
   - Never protect in a layout: layouts don't re-render on navigation (Partial Rendering) and don't stop child segments from rendering. Layouts may read the session for display only.
 - **DB**: Drizzle on Neon's HTTP driver (`db/index.ts`). Schema in `db/schema/`, re-exported from `db/schema/index.ts`; table names are plural (the Better Auth adapter uses `usePlural`). The app uses `DATABASE_URL` (pooled), drizzle-kit uses `DATABASE_URL_UNPOOLED` (direct).
-- **Code layout**: domain code goes in `features/<domain>/`; shared components in `components/`.
+- **Code layout**: domain code goes in `features/<domain>/`; shared components in `components/`; pure helpers in `utils/`, one file per topic (e.g. `utils/string.ts`).
 - **Forms**: Formisch (`@formisch/react`) with Valibot schemas.
 - The dashboard still uses hard-coded sample data.
 
