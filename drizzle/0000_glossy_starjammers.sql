@@ -1,3 +1,6 @@
+CREATE TYPE "public"."transaction_expense_type_enum" AS ENUM('fixed', 'variable', 'ant');--> statement-breakpoint
+CREATE TYPE "public"."transaction_payment_method_enum" AS ENUM('cash', 'debit_card', 'credit_card', 'transfer');--> statement-breakpoint
+CREATE TYPE "public"."transaction_type_enum" AS ENUM('income', 'expense');--> statement-breakpoint
 CREATE TABLE "accounts" (
 	"id" text PRIMARY KEY NOT NULL,
 	"account_id" text NOT NULL,
@@ -54,8 +57,28 @@ CREATE TABLE "verifications" (
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
 --> statement-breakpoint
+CREATE TABLE "transactions" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"user_id" text NOT NULL,
+	"type" "transaction_type_enum" NOT NULL,
+	"concept" text NOT NULL,
+	"amount" numeric(12, 2) NOT NULL,
+	"payment_method" "transaction_payment_method_enum" NOT NULL,
+	"expense_type" "transaction_expense_type_enum",
+	"transaction_date" date NOT NULL,
+	"notes" text,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL,
+	CONSTRAINT "transactions_amount_positive" CHECK ("transactions"."amount" > 0)
+);
+--> statement-breakpoint
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
+ALTER TABLE "transactions" ADD CONSTRAINT "transactions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;--> statement-breakpoint
 CREATE INDEX "accounts_userId_idx" ON "accounts" USING btree ("user_id");--> statement-breakpoint
 CREATE INDEX "sessions_userId_idx" ON "sessions" USING btree ("user_id");--> statement-breakpoint
-CREATE INDEX "verifications_identifier_idx" ON "verifications" USING btree ("identifier");
+CREATE INDEX "verifications_identifier_idx" ON "verifications" USING btree ("identifier");--> statement-breakpoint
+CREATE INDEX "transactions_user_date_idx" ON "transactions" USING btree ("user_id","transaction_date");--> statement-breakpoint
+CREATE INDEX "transactions_user_type_idx" ON "transactions" USING btree ("user_id","type");--> statement-breakpoint
+CREATE INDEX "transactions_user_payment_method_idx" ON "transactions" USING btree ("user_id","payment_method");--> statement-breakpoint
+CREATE INDEX "transactions_user_expense_type_idx" ON "transactions" USING btree ("user_id","expense_type");
