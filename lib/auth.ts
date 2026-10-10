@@ -1,3 +1,4 @@
+import { i18n, locales } from "@better-auth/i18n";
 import { betterAuth } from "better-auth";
 import { drizzleAdapter } from "better-auth/adapters/drizzle";
 import { nextCookies } from "better-auth/next-js";
@@ -52,8 +53,12 @@ export const auth = betterAuth({
       },
     },
   },
-  // Must be the last plugin.
-  plugins: [nextCookies()],
+  plugins: [
+    // Spanish-only UI: with a single locale, every error falls back to "es".
+    i18n({ translations: { es: locales.es }, defaultLocale: "es" }),
+    // Must be the last plugin.
+    nextCookies(),
+  ],
 });
 
 /** @lintignore */
