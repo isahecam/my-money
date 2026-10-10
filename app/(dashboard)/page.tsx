@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { verifySession } from "@/features/auth/dal";
+import { CreateTransactionDrawerDialog } from "@/features/transactions/components/create-transaction-drawer-dialog";
 
 export const metadata: Metadata = {
   title: "Resumen · My Money",
@@ -94,6 +95,7 @@ export default async function DashboardPage() {
   return (
     <>
       <SiteHeader title="Resumen" />
+
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((stat) => {
@@ -126,6 +128,9 @@ export default async function DashboardPage() {
             <CardHeader>
               <CardTitle>Transacciones recientes</CardTitle>
               <CardDescription>Los últimos movimientos de tus cuentas.</CardDescription>
+              <CardAction>
+                <CreateTransactionDrawerDialog />
+              </CardAction>
             </CardHeader>
             <CardContent>
               <Table>
