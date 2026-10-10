@@ -166,6 +166,8 @@
 
   body {
     @apply bg-background text-foreground;
+    /* iOS Safari: the drawer overlay is absolute and needs a positioned body. */
+    position: relative;
   }
 
   button:not(:disabled),
