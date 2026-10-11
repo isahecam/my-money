@@ -96,12 +96,12 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
     <>
       <SiteHeader title="Resumen" />
 
-      <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+      <div className="@container/main flex flex-1 flex-col gap-4 p-4 pt-0">
         <div className="flex justify-end">
           <DateRangeFilter />
         </div>
 
-        <div className="grid gap-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card md:grid-cols-3 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
+        <div className="grid gap-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card @3xl/main:grid-cols-3 dark:*:data-[slot=card]:bg-card">
           <StatCardErrorBoundary
             key={`income|${from}|${to}`}
             title={hasRange ? "Ingresos" : "Ingresos totales"}>
