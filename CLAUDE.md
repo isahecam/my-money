@@ -28,6 +28,7 @@ Use pnpm only.
   - Never protect in a layout: layouts don't re-render on navigation (Partial Rendering) and don't stop child segments from rendering. Layouts may read the session for display only.
 - **DB**: Drizzle on Neon's HTTP driver (`db/index.ts`). Schema in `db/schema/`, re-exported from `db/schema/index.ts`; table names are plural (the Better Auth adapter uses `usePlural`). The app uses `DATABASE_URL` (pooled), drizzle-kit uses `DATABASE_URL_UNPOOLED` (direct). Money is stored as `bigint` cents (`mode: "number"`) plus a `currency` `pgEnum`; forms and Valibot schemas keep pesos as a string, and the service converts them with `toCents` (`utils/money.ts`). Don't add a schema `transform`: the action re-parses the form output with the same schema.
 - **Code layout**: domain code goes in `features/<domain>/`; shared components in `components/`; pure helpers in `utils/`, one file per topic (e.g. `utils/string.ts`).
+- **Dates**: always through the adapter `dt` (`lib/date`), with `YYYY-MM-DD` strings in and out. Don't import `date-fns` outside `lib/date/`; external dependencies only appear in their adapter or in primitive components (`components/ui/`, e.g. the `react-day-picker` locale for `Calendar`). "Today" is `dt.today()`, never `new Date()`.
 - **Mutations** (repository, service, action), per feature:
   - `repositories/<domain>-repository.ts`: a class (e.g. `DrizzleTransactionRepository`) implementing the contract declared in the feature's `types.ts` (e.g. `TransactionRepository`). Receives `db` through the constructor. Returns a `Result` (`lib/errors/result.ts`): known constraint violations become `err({ reason })` via `constraintReason` (`lib/errors/constraint-reason.ts`); anything else is rethrown.
   - `services/<domain>-service.ts`: a class with no contract that receives the repository contract through the constructor. Business logic only; never imports next-safe-action. Returns the `Result`.
@@ -35,8 +36,17 @@ Use pnpm only.
   - `errors.ts`: `<domain>Errors` (`reason` → `{ title, description, field? }`, user-facing Spanish) and `<domain>Constraints` (constraint name → `reason`).
   - The action translates the `Result`: an error with `field` → `returnValidationErrors` on that field; without `field` → `returnActionError({ reason, message })`. Success returns `{ message: { title, description }, payload }`. The repository's `.returning(...)` selects only the fields the UI needs (no `userId` or timestamps), so the action passes its result through as is. Let TypeScript infer return types; don't annotate them. Unexpected errors reach `handleServerError`, which logs them and returns `{ reason: "UNEXPECTED", message }`.
   - Validation errors use the flattened shape (`defaultValidationErrorsShape: "flattened"`): the client reads `{ formErrors, fieldErrors }` and maps `fieldErrors` onto Formisch with `setErrors`.
+- **Reads** (repository, service, query), per feature:
+  - Same repository and service layers as mutations (contract in `types.ts`, class plus instance per file), with semantic method names (e.g. `StatisticsRepository.sumIncome`, `StatisticsService.getTotalIncome`). Reads have no expected errors, so they return the value directly, not a `Result`.
+  - `queries/<name>.ts` (one file per query, e.g. `get-total-income.ts`) is the entry point, like the action for mutations: it calls `verifySession()` for the user and then the service. Server Components call the query, never the service or `db`.
+  - Each Server Component fetches its own data inside its own `<Suspense>`, wrapped in an error boundary built with `catchError` (`next/error`, e.g. `StatCardErrorBoundary`), so a failure stays in that component and offers `retry()`. A `key` that depends on the filters goes on the boundary, so changing them clears the error and shows the skeleton again.
+- **URL filters** (nuqs):
+  - Parsers and `createSearchParamsCache` go in `features/<domain>/lib/search-params.ts`, imported from `nuqs/server` so server and client can share them.
+  - The page must `await cache.parse(searchParams)`; components read it with `cache.get` / `cache.all`, no props.
+  - Each filter is its own Client Component that only reads and writes the URL, through the feature's `useFilters` hook (`useQueryStates` with `shallow: false`, so the server re-renders). Navigation options like `history` are passed by the component.
+  - Dates travel as `YYYY-MM-DD` strings (`parseAsDateString`), never `parseAsIsoDate` (UTC midnight shifts the day). Convert to `Date` only at the edge with third-party components (`dt.toDate` / `dt.fromDate`).
 - **Forms**: Formisch (`@formisch/react`) with Valibot schemas.
-- The dashboard still uses hard-coded sample data.
+- The dashboard still uses hard-coded sample data, except the income card.
 
 ## Comments and language
 
@@ -64,6 +74,7 @@ Use pnpm only.
 
 ## Guardrails
 
-- `.env*` (including `.env.example`) can't be read or edited. Required vars: `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `DATABASE_URL`, `DATABASE_URL_UNPOOLED`.
+- Always follow the official docs of each library (`node_modules/next/dist/docs/`, Context7, shadcn docs). Don't improvise APIs or patch things just to make them work; if the docs don't cover a case, ask.
+- `.env*` (including `.env.example`) can't be read or edited. Required vars: `BETTER_AUTH_SECRET`, `BETTER_AUTH_URL`, `DATABASE_URL`, `DATABASE_URL_UNPOOLED`, `NEXT_PUBLIC_APP_TIMEZONE` (IANA zone that resolves "today"; Vitest sets it in `vitest.config.mts`).
 - `drizzle/` (generated migrations) can't be edited, and `drizzle-kit push` is denied. Change the schema, then `pnpm db:generate` → `pnpm db:migrate`. Both commands ask for approval.
 - `.agents/skills/` is vendored (skills CLI, pinned in `skills-lock.json`), and `.claude/skills/` is a committed copy of it (locally a junction, so both change together). Don't edit or format either; both are in oxfmt's `ignorePatterns`.
