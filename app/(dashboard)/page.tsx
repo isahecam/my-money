@@ -1,5 +1,6 @@
 import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import type { Metadata } from "next";
+import { Suspense } from "react";
 
 import { SiteHeader } from "@/components/site-header";
 import { Badge } from "@/components/ui/badge";
@@ -22,6 +23,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { verifySession } from "@/features/auth/dal";
+import { DateRangeFilter } from "@/features/dashboard/components/date-range-filter";
+import { IncomeCard } from "@/features/dashboard/components/income-card";
+import { IncomeCardSkeleton } from "@/features/dashboard/components/income-card-skeleton";
+import { StatCardErrorBoundary } from "@/features/dashboard/components/stat-card-error-boundary";
+import { resolveDateRange, searchParamsCache } from "@/features/dashboard/lib/search-params";
 import { CreateTransactionDrawerDialog } from "@/features/transactions/components/create-transaction-drawer-dialog";
 
 export const metadata: Metadata = {
@@ -34,7 +40,6 @@ const shortDate = new Intl.DateTimeFormat("es-MX", { day: "numeric", month: "sho
 // Sample data until the DB is wired up.
 const stats = [
   { label: "Saldo total", value: 84_250.4, change: 4.2, hint: "En todas tus cuentas" },
-  { label: "Ingresos del mes", value: 32_000, change: 1.5, hint: "Frente al mes anterior" },
   { label: "Gastos del mes", value: 18_430.75, change: -6.8, hint: "Frente al mes anterior" },
   { label: "Ahorro del mes", value: 13_569.25, change: 12.3, hint: "42 % de tus ingresos" },
 ];
@@ -89,15 +94,27 @@ const budgets = [
   { category: "Suscripciones", spent: 599, limit: 800 },
 ];
 
-export default async function DashboardPage() {
+export default async function DashboardPage({ searchParams }: Readonly<PageProps<"/">>) {
   await verifySession();
+  const { from, to } = await searchParamsCache.parse(searchParams);
 
   return (
     <>
       <SiteHeader title="Resumen" />
 
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+        <div className="flex justify-end">
+          <DateRangeFilter />
+        </div>
+
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+          <StatCardErrorBoundary
+            key={`${from}|${to}`}
+            title={resolveDateRange({ from, to }) ? "Ingresos" : "Ingresos totales"}>
+            <Suspense fallback={<IncomeCardSkeleton />}>
+              <IncomeCard />
+            </Suspense>
+          </StatCardErrorBoundary>
           {stats.map((stat) => {
             const TrendIcon = stat.change >= 0 ? TrendingUpIcon : TrendingDownIcon;
             return (

@@ -1,6 +1,7 @@
 "use server";
 
 import { returnValidationErrors } from "next-safe-action";
+import { refresh } from "next/cache";
 
 import { transactionErrors } from "@/features/transactions/errors";
 import { TransactionSchema } from "@/features/transactions/schemas/transaction-schema";
@@ -19,6 +20,9 @@ export const createTransaction = authActionClient
       }
       return returnActionError({ reason: error.reason, message: { title, description } });
     }
+
+    // Re-renders the current page so totals include the new transaction.
+    refresh();
 
     const typeLabel = transaction.type === "expense" ? "gasto" : "ingreso";
 
