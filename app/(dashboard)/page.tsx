@@ -30,18 +30,17 @@ import { StatCardErrorBoundary } from "@/features/dashboard/components/stat-card
 import { StatCardSkeleton } from "@/features/dashboard/components/stat-card-skeleton";
 import { resolveDateRange, searchParamsCache } from "@/features/dashboard/lib/search-params";
 import { CreateTransactionDrawerDialog } from "@/features/transactions/components/create-transaction-drawer-dialog";
+import { dt } from "@/lib/date";
+import { formatCents } from "@/utils/currency";
 
 export const metadata: Metadata = {
   title: "Resumen · My Money",
 };
 
-const currency = new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" });
-const shortDate = new Intl.DateTimeFormat("es-MX", { day: "numeric", month: "short" });
-
 // Sample data until the DB is wired up.
 const stats = [
-  { label: "Saldo total", value: 84_250.4, change: 4.2, hint: "En todas tus cuentas" },
-  { label: "Ahorro del mes", value: 13_569.25, change: 12.3, hint: "42 % de tus ingresos" },
+  { label: "Saldo total", valueCents: 8_425_040, change: 4.2, hint: "En todas tus cuentas" },
+  { label: "Ahorro del mes", valueCents: 1_356_925, change: 12.3, hint: "42 % de tus ingresos" },
 ];
 
 const transactions = [
@@ -51,7 +50,7 @@ const transactions = [
     description: "Supermercado",
     category: "Comida",
     account: "Débito",
-    amount: -1_245.3,
+    amountCents: -124_530,
   },
   {
     id: 2,
@@ -59,7 +58,7 @@ const transactions = [
     description: "Nómina",
     category: "Salario",
     account: "Débito",
-    amount: 16_000,
+    amountCents: 1_600_000,
   },
   {
     id: 3,
@@ -67,7 +66,7 @@ const transactions = [
     description: "Netflix",
     category: "Suscripciones",
     account: "Crédito",
-    amount: -299,
+    amountCents: -29_900,
   },
   {
     id: 4,
@@ -75,7 +74,7 @@ const transactions = [
     description: "Gasolina",
     category: "Transporte",
     account: "Crédito",
-    amount: -850,
+    amountCents: -85_000,
   },
   {
     id: 5,
@@ -83,15 +82,15 @@ const transactions = [
     description: "Renta",
     category: "Vivienda",
     account: "Débito",
-    amount: -9_500,
+    amountCents: -950_000,
   },
 ];
 
 const budgets = [
-  { category: "Comida", spent: 4_320, limit: 6_000 },
-  { category: "Transporte", spent: 1_850, limit: 2_500 },
-  { category: "Entretenimiento", spent: 1_400, limit: 1_500 },
-  { category: "Suscripciones", spent: 599, limit: 800 },
+  { category: "Comida", spentCents: 432_000, limitCents: 600_000 },
+  { category: "Transporte", spentCents: 185_000, limitCents: 250_000 },
+  { category: "Entretenimiento", spentCents: 140_000, limitCents: 150_000 },
+  { category: "Suscripciones", spentCents: 59_900, limitCents: 80_000 },
 ];
 
 export default async function DashboardPage({ searchParams }: Readonly<PageProps<"/">>) {
@@ -130,7 +129,7 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
                 <CardHeader>
                   <CardDescription>{stat.label}</CardDescription>
                   <CardTitle>
-                    <span className="text-2xl tabular-nums">{currency.format(stat.value)}</span>
+                    <span className="text-2xl tabular-nums">{formatCents(stat.valueCents)}</span>
                   </CardTitle>
                   <CardAction>
                     <Badge variant="outline">
@@ -172,9 +171,7 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
                   {transactions.map((tx) => (
                     <TableRow key={tx.id}>
                       <TableCell>
-                        <span className="text-muted-foreground">
-                          {shortDate.format(new Date(`${tx.date}T00:00:00`))}
-                        </span>
+                        <span className="text-muted-foreground">{dt.format(tx.date, "d MMM")}</span>
                       </TableCell>
                       <TableCell>
                         <span className="font-medium">{tx.description}</span>
@@ -185,8 +182,8 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
                       <TableCell className="hidden md:table-cell">{tx.account}</TableCell>
                       <TableCell className="text-right">
                         <span className="tabular-nums">
-                          {tx.amount > 0 && "+"}
-                          {currency.format(tx.amount)}
+                          {tx.amountCents > 0 && "+"}
+                          {formatCents(tx.amountCents)}
                         </span>
                       </TableCell>
                     </TableRow>
@@ -207,12 +204,12 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
                   <div key={budget.category} className="flex flex-col gap-2">
                     <Progress
                       locale="es-MX"
-                      value={Math.round((budget.spent / budget.limit) * 100)}>
+                      value={Math.round((budget.spentCents / budget.limitCents) * 100)}>
                       <ProgressLabel>{budget.category}</ProgressLabel>
                       <ProgressValue />
                     </Progress>
                     <span className="text-xs text-muted-foreground tabular-nums">
-                      {currency.format(budget.spent)} de {currency.format(budget.limit)}
+                      {formatCents(budget.spentCents)} de {formatCents(budget.limitCents)}
                     </span>
                   </div>
                 ))}
