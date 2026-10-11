@@ -36,10 +36,8 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
     <>
       <SiteHeader title="Resumen" />
 
-      <div className="@container/main flex flex-1 flex-col gap-4 p-4 pt-0">
-        <div className="flex justify-end">
-          <DateRangeFilter />
-        </div>
+      <section className="@container/main flex flex-1 flex-col gap-6 p-4 pt-0">
+        <DateRangeFilter />
 
         <div className="grid gap-4 @3xl/main:grid-cols-3">
           <StatCardErrorBoundary
@@ -89,7 +87,7 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
             </CardContent>
           </Card>
         </div>
-      </div>
+      </section>
     </>
   );
 }

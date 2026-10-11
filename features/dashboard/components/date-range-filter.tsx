@@ -51,7 +51,7 @@ export function DateRangeFilter() {
 
   return (
     <Popover open={open} onOpenChange={handleOpenChange}>
-      <PopoverTrigger render={<Button variant="outline" className="justify-start" />}>
+      <PopoverTrigger render={<Button variant="outline" className="w-full sm:w-fit sm:self-end" />}>
         <CalendarIcon data-icon="inline-start" />
         {range ? formatDateRange(range) : "Todo el historial"}
       </PopoverTrigger>

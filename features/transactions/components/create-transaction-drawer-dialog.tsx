@@ -39,7 +39,7 @@ export function CreateTransactionDrawerDialog() {
 
   const { form, open, setOpen, handleSubmit, isPending } = useCreateTransaction();
 
-  const trigger = <Button size="sm" />;
+  const trigger = <Button size="sm" className="w-full sm:w-fit sm:self-end" />;
   const triggerContent = (
     <>
       <PlusIcon data-icon="inline-start" />
