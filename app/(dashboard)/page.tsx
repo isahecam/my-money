@@ -1,4 +1,3 @@
-import { TrendingDownIcon, TrendingUpIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -9,7 +8,6 @@ import {
   CardAction,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -39,10 +37,6 @@ export const metadata: Metadata = {
 };
 
 // Sample data until the DB is wired up.
-const stats = [
-  { label: "Ahorro del mes", valueCents: 1_356_925, change: 12.3, hint: "42 % de tus ingresos" },
-];
-
 const transactions = [
   {
     id: 1,
@@ -107,7 +101,7 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
           <DateRangeFilter />
         </div>
 
-        <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <div className="grid gap-4 md:grid-cols-3">
           <StatCardErrorBoundary
             key={`income|${from}|${to}`}
             title={hasRange ? "Ingresos" : "Ingresos totales"}>
@@ -129,29 +123,6 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
               <BalanceCard />
             </Suspense>
           </StatCardErrorBoundary>
-          {stats.map((stat) => {
-            const TrendIcon = stat.change >= 0 ? TrendingUpIcon : TrendingDownIcon;
-            return (
-              <Card key={stat.label}>
-                <CardHeader>
-                  <CardDescription>{stat.label}</CardDescription>
-                  <CardTitle>
-                    <span className="text-2xl tabular-nums">{formatCents(stat.valueCents)}</span>
-                  </CardTitle>
-                  <CardAction>
-                    <Badge variant="outline">
-                      <TrendIcon data-icon="inline-start" />
-                      {stat.change > 0 && "+"}
-                      {stat.change} %
-                    </Badge>
-                  </CardAction>
-                </CardHeader>
-                <CardFooter>
-                  <span className="text-sm text-muted-foreground">{stat.hint}</span>
-                </CardFooter>
-              </Card>
-            );
-          })}
         </div>
 
         <div className="grid gap-4 lg:grid-cols-3">
