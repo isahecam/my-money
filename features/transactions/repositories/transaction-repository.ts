@@ -1,7 +1,8 @@
-import { getTableColumns } from "drizzle-orm";
+import { and, between, desc, eq, getTableColumns } from "drizzle-orm";
 
 import { db } from "@/db";
 import { transactions } from "@/db/schema";
+import type { DateRange } from "@/features/dashboard/types";
 import { transactionConstraints } from "@/features/transactions/errors";
 import type { NewTransaction, TransactionRepository } from "@/features/transactions/types";
 import { constraintReason } from "@/lib/errors/constraint-reason";
@@ -32,6 +33,23 @@ export class DrizzleTransactionRepository implements TransactionRepository {
       // Unknown failures go to `handleServerError`.
       throw error;
     }
+  }
+
+  findLatest(userId: string, range: DateRange | null, limit: number) {
+    return (
+      this.database
+        .select(returnedColumns)
+        .from(transactions)
+        .where(
+          and(
+            eq(transactions.userId, userId),
+            range ? between(transactions.transactionDate, range.from, range.to) : undefined,
+          ),
+        )
+        // `createdAt` breaks ties between transactions on the same day.
+        .orderBy(desc(transactions.transactionDate), desc(transactions.createdAt))
+        .limit(limit)
+    );
   }
 }
 
