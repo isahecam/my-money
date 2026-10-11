@@ -1,4 +1,4 @@
-import { LayoutDashboardIcon } from "lucide-react";
+import { ArrowLeftRightIcon, LayoutDashboardIcon } from "lucide-react";
 
 import type { NavGroup } from "@/types/shared-types";
 
@@ -15,7 +15,10 @@ export const SIDEBAR_NAV = {
   main: [
     {
       label: "Finanzas",
-      items: [{ label: "Resumen", route: "/", icon: LayoutDashboardIcon }],
+      items: [
+        { label: "Resumen", route: "/", icon: LayoutDashboardIcon },
+        { label: "Transacciones", route: "/transactions", icon: ArrowLeftRightIcon },
+      ],
     },
   ],
 } satisfies { main: NavGroup[] };

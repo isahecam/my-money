@@ -1,6 +1,6 @@
-import { tableFeatures } from "@tanstack/react-table";
+import { rowPaginationFeature, tableFeatures } from "@tanstack/react-table";
 
-// Core features only: the table is read-only, without sorting, filtering or pagination.
-export const features = tableFeatures({});
+// Manual pagination only: the server sends the requested page. No sorting or filtering yet.
+export const features = tableFeatures({ rowPaginationFeature });
 
 export type DataTableFeatures = typeof features;

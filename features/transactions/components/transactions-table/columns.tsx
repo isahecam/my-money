@@ -22,7 +22,8 @@ const columnHelper = createColumnHelper<DataTableFeatures, TransactionDto>();
 export const columns = columnHelper.columns([
   columnHelper.accessor("transactionDate", {
     header: "Fecha",
-    cell: (info) => dt.format(info.getValue(), "d MMM"),
+    // Full history spans years, unlike the dashboard's latest transactions.
+    cell: (info) => dt.format(info.getValue(), "d MMM yyyy"),
   }),
   columnHelper.accessor("concept", {
     header: "Concepto",
