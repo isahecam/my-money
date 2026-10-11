@@ -7,6 +7,11 @@ export async function ExpenseCard() {
   const totalCents = await getTotalExpenses(range);
 
   return (
-    <StatCard title={range ? "Gastos" : "Gastos totales"} amountCents={totalCents} range={range} />
+    <StatCard
+      title={range ? "Gastos" : "Gastos totales"}
+      amountCents={totalCents}
+      range={range}
+      type="expense"
+    />
   );
 }

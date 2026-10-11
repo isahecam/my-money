@@ -11,6 +11,7 @@ export async function IncomeCard() {
       title={range ? "Ingresos" : "Ingresos totales"}
       amountCents={totalCents}
       range={range}
+      type="income"
     />
   );
 }
