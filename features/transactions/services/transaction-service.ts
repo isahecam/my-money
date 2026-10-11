@@ -45,6 +45,11 @@ export class TransactionService {
 
     return { data, total, page, pageSize };
   }
+
+  /** `userId` must come from the session, so users can only delete their own transactions. */
+  delete(userId: string, id: string) {
+    return this.repository.delete(userId, id);
+  }
 }
 
 export const transactionService = new TransactionService(transactionRepository);

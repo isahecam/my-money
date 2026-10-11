@@ -13,6 +13,10 @@ export const transactionErrors = {
     title: "No se pudo registrar el movimiento",
     description: "Tu usuario ya no existe.",
   },
+  TRANSACTION_NOT_FOUND: {
+    title: "Movimiento no encontrado",
+    description: "El movimiento ya no existe o no te pertenece.",
+  },
 } as const satisfies Record<
   string,
   { title: string; description: string; field?: keyof v.InferInput<typeof TransactionSchema> }

@@ -3,6 +3,7 @@
 import { createColumnHelper } from "@tanstack/react-table";
 
 import { Badge } from "@/components/ui/badge";
+import { DeleteTransactionDialog } from "@/features/transactions/components/delete-transaction-dialog";
 import { TransactionAmount } from "@/features/transactions/components/transaction-amount";
 import {
   EXPENSE_TYPE_LABELS,
@@ -69,6 +70,14 @@ export const columns = columnHelper.columns([
         amountCents={info.getValue()}
         className="font-bold"
       />
+    ),
+  }),
+  columnHelper.display({
+    id: "actions",
+    cell: ({ row }) => (
+      <div className="flex justify-center gap-3">
+        <DeleteTransactionDialog transaction={row.original} />
+      </div>
     ),
   }),
 ]);

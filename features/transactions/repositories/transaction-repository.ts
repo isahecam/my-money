@@ -70,6 +70,16 @@ export class DrizzleTransactionRepository implements TransactionRepository {
   count(userId: string) {
     return this.database.$count(transactions, eq(transactions.userId, userId));
   }
+
+  async delete(userId: string, id: string) {
+    const [transaction] = await this.database
+      .delete(transactions)
+      .where(and(eq(transactions.id, id), eq(transactions.userId, userId)))
+      .returning(returnedColumns);
+    // No row: it was already deleted or belongs to another user.
+    if (!transaction) return err({ reason: "TRANSACTION_NOT_FOUND" });
+    return ok(transaction);
+  }
 }
 
 export const transactionRepository = new DrizzleTransactionRepository(db);

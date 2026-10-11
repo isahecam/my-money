@@ -26,4 +26,10 @@ export interface TransactionRepository {
   findPage(userId: string, limit: number, offset: number): Promise<TransactionDto[]>;
 
   count(userId: string): Promise<number>;
+
+  /** Deletes the transaction only if it belongs to `userId`. */
+  delete(
+    userId: string,
+    id: string,
+  ): Promise<Result<{ reason: "TRANSACTION_NOT_FOUND" }, TransactionDto>>;
 }

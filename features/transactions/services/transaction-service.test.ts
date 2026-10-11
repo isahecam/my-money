@@ -12,6 +12,7 @@ vi.mock("@/features/transactions/repositories/transaction-repository", () => ({
 function fakeRepository(total: number) {
   return {
     create: vi.fn(),
+    delete: vi.fn(),
     findLatest: vi.fn(),
     findPage: vi.fn().mockResolvedValue([]),
     count: vi.fn().mockResolvedValue(total),
