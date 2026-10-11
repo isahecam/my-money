@@ -8,7 +8,19 @@ import type { DateRange, StatisticsRepository } from "@/features/dashboard/types
 export class DrizzleStatisticsRepository implements StatisticsRepository {
   constructor(private readonly database: typeof db) {}
 
-  async sumIncome(userId: string, range: DateRange | null) {
+  sumIncome(userId: string, range: DateRange | null) {
+    return this.#sumByType(userId, "income", range);
+  }
+
+  sumExpenses(userId: string, range: DateRange | null) {
+    return this.#sumByType(userId, "expense", range);
+  }
+
+  async #sumByType(
+    userId: string,
+    type: (typeof transactions.$inferSelect)["type"],
+    range: DateRange | null,
+  ) {
     const [{ total }] = await this.database
       .select({
         // `sum` returns a string, or null without rows.
@@ -18,7 +30,7 @@ export class DrizzleStatisticsRepository implements StatisticsRepository {
       .where(
         and(
           eq(transactions.userId, userId),
-          eq(transactions.type, "income"),
+          eq(transactions.type, type),
           range ? between(transactions.transactionDate, range.from, range.to) : undefined,
         ),
       );

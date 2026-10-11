@@ -9,6 +9,11 @@ export class StatisticsService {
   getTotalIncome(userId: string, range: DateRange | null) {
     return this.repository.sumIncome(userId, range);
   }
+
+  /** Total expenses in cents within `range`, or all time when `null`. */
+  getTotalExpenses(userId: string, range: DateRange | null) {
+    return this.repository.sumExpenses(userId, range);
+  }
 }
 
 export const statisticsService = new StatisticsService(statisticsRepository);

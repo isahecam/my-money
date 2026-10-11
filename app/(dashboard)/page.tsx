@@ -24,9 +24,10 @@ import {
 } from "@/components/ui/table";
 import { verifySession } from "@/features/auth/dal";
 import { DateRangeFilter } from "@/features/dashboard/components/date-range-filter";
+import { ExpenseCard } from "@/features/dashboard/components/expense-card";
 import { IncomeCard } from "@/features/dashboard/components/income-card";
-import { IncomeCardSkeleton } from "@/features/dashboard/components/income-card-skeleton";
 import { StatCardErrorBoundary } from "@/features/dashboard/components/stat-card-error-boundary";
+import { StatCardSkeleton } from "@/features/dashboard/components/stat-card-skeleton";
 import { resolveDateRange, searchParamsCache } from "@/features/dashboard/lib/search-params";
 import { CreateTransactionDrawerDialog } from "@/features/transactions/components/create-transaction-drawer-dialog";
 
@@ -40,7 +41,6 @@ const shortDate = new Intl.DateTimeFormat("es-MX", { day: "numeric", month: "sho
 // Sample data until the DB is wired up.
 const stats = [
   { label: "Saldo total", value: 84_250.4, change: 4.2, hint: "En todas tus cuentas" },
-  { label: "Gastos del mes", value: 18_430.75, change: -6.8, hint: "Frente al mes anterior" },
   { label: "Ahorro del mes", value: 13_569.25, change: 12.3, hint: "42 % de tus ingresos" },
 ];
 
@@ -97,6 +97,7 @@ const budgets = [
 export default async function DashboardPage({ searchParams }: Readonly<PageProps<"/">>) {
   await verifySession();
   const { from, to } = await searchParamsCache.parse(searchParams);
+  const hasRange = resolveDateRange({ from, to }) !== null;
 
   return (
     <>
@@ -109,10 +110,17 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
 
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
           <StatCardErrorBoundary
-            key={`${from}|${to}`}
-            title={resolveDateRange({ from, to }) ? "Ingresos" : "Ingresos totales"}>
-            <Suspense fallback={<IncomeCardSkeleton />}>
+            key={`income|${from}|${to}`}
+            title={hasRange ? "Ingresos" : "Ingresos totales"}>
+            <Suspense fallback={<StatCardSkeleton />}>
               <IncomeCard />
+            </Suspense>
+          </StatCardErrorBoundary>
+          <StatCardErrorBoundary
+            key={`expenses|${from}|${to}`}
+            title={hasRange ? "Gastos" : "Gastos totales"}>
+            <Suspense fallback={<StatCardSkeleton />}>
+              <ExpenseCard />
             </Suspense>
           </StatCardErrorBoundary>
           {stats.map((stat) => {
