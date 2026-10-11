@@ -199,6 +199,9 @@ importers:
       drizzle-orm:
         specifier: ^0.45.3
         version: 0.45.3(@neondatabase/serverless@1.2.0)(kysely@0.29.6)
+      drizzle-valibot:
+        specifier: ^0.4.2
+        version: 0.4.2(drizzle-orm@0.45.3(@neondatabase/serverless@1.2.0)(kysely@0.29.6))(valibot@1.5.0(typescript@5.9.3))
       lucide-react:
         specifier: ^1.52.0
         version: 1.52.0(@types/react@19.3.0)(react@19.3.0)
@@ -2930,6 +2933,12 @@ packages:
         optional: true
       sqlite3:
         optional: true
+
+  drizzle-valibot@0.4.2:
+    resolution: {integrity: sha512-tzjT7g0Di/HX7426marIy8IDtWODjPgrwvgscdevLQRUe5rzYzRhx6bDsYLdDFF9VI/eaYgnjNeF/fznWJoUjg==}
+    peerDependencies:
+      drizzle-orm: '>=0.36.0'
+      valibot: '>=1.0.0-beta.7'
 
   dunder-proto@1.0.1:
     resolution: {integrity: sha512-KIN/nDJBQRcXw0MLVhZE9iQHmG68qAVIBg9CqmUYjmQIhgij9U5MFvrqkUL5FbtyyzZuOeOt0zdeRe4UY7ct+A==}
@@ -6359,6 +6368,11 @@ snapshots:
     optionalDependencies:
       '@neondatabase/serverless': 1.2.0
       kysely: 0.29.6
+
+  drizzle-valibot@0.4.2(drizzle-orm@0.45.3(@neondatabase/serverless@1.2.0)(kysely@0.29.6))(valibot@1.5.0(typescript@5.9.3)):
+    dependencies:
+      drizzle-orm: 0.45.3(@neondatabase/serverless@1.2.0)(kysely@0.29.6)
+      valibot: 1.5.0(typescript@5.9.3)
 
   dunder-proto@1.0.1:
     dependencies:
