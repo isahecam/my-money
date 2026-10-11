@@ -45,7 +45,7 @@ Use pnpm only.
   - The page must `await cache.parse(searchParams)`; components read it with `cache.get` / `cache.all`, no props.
   - Each filter is its own Client Component that only reads and writes the URL, through the feature's `useFilters` hook (`useQueryStates` with `shallow: false`, so the server re-renders). Navigation options like `history` are passed by the component.
   - Dates travel as `YYYY-MM-DD` strings (`parseAsDateString`), never `parseAsIsoDate` (UTC midnight shifts the day). Convert to `Date` only at the edge with third-party components (`dt.toDate` / `dt.fromDate`).
-- **Forms**: Formisch (`@formisch/react`) with Valibot schemas.
+- **Forms**: Formisch (`@formisch/react`) with Valibot schemas. Read `docs/VALIDATION_SCHEMAS.md` before writing a schema: form input is handwritten (`schemas/<domain>-schema.ts`, client and server); ids of existing rows are derived from the Drizzle table with `drizzle-valibot` (`schemas/<domain>-db-schema.ts`, server only) and, next to a form, travel as `bindArgsSchemas`. Read `docs/FORMS.md` before an edit form: `useForm` reads `initialInput` only on mount (there's no React Hook Form `values`), so load fresh server data with `reset(form, { initialInput })` when the dialog opens.
 - The dashboard still uses hard-coded sample data for budgets; the stat cards (income, expenses, balance) are real and share `StatCard` in `components/layouts/`, and the recent transactions table (`LatestTransactionsTable`, TanStack Table v9 per `docs/DATA_TABLES.md`) shows the latest 10 within the date range.
 
 ## Comments and language
