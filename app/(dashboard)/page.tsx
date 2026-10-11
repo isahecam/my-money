@@ -23,6 +23,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { verifySession } from "@/features/auth/dal";
+import { BalanceCard } from "@/features/dashboard/components/balance-card";
 import { DateRangeFilter } from "@/features/dashboard/components/date-range-filter";
 import { ExpenseCard } from "@/features/dashboard/components/expense-card";
 import { IncomeCard } from "@/features/dashboard/components/income-card";
@@ -39,7 +40,6 @@ export const metadata: Metadata = {
 
 // Sample data until the DB is wired up.
 const stats = [
-  { label: "Saldo total", valueCents: 8_425_040, change: 4.2, hint: "En todas tus cuentas" },
   { label: "Ahorro del mes", valueCents: 1_356_925, change: 12.3, hint: "42 % de tus ingresos" },
 ];
 
@@ -120,6 +120,13 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
             title={hasRange ? "Gastos" : "Gastos totales"}>
             <Suspense fallback={<StatCardSkeleton />}>
               <ExpenseCard />
+            </Suspense>
+          </StatCardErrorBoundary>
+          <StatCardErrorBoundary
+            key={`balance|${from}|${to}`}
+            title={hasRange ? "Balance" : "Balance total"}>
+            <Suspense fallback={<StatCardSkeleton />}>
+              <BalanceCard />
             </Suspense>
           </StatCardErrorBoundary>
           {stats.map((stat) => {
