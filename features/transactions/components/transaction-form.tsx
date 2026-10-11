@@ -2,7 +2,6 @@
 
 import { Field as FormischField, useField } from "@formisch/react";
 import type { FormStore } from "@formisch/react";
-import { format, parseISO } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 import { useId, useState } from "react";
 import { es } from "react-day-picker/locale";
@@ -48,8 +47,7 @@ import {
   TRANSACTION_TYPES,
 } from "@/features/transactions/constants";
 import { TransactionSchema } from "@/features/transactions/schemas/transaction-schema";
-
-const longDate = new Intl.DateTimeFormat("es-MX", { dateStyle: "long" });
+import { dt } from "@/lib/date";
 
 export function TransactionForm({ of }: Readonly<{ of: FormStore<typeof TransactionSchema> }>) {
   const baseId = useId();
@@ -245,8 +243,7 @@ export function TransactionForm({ of }: Readonly<{ of: FormStore<typeof Transact
 
       <FormischField of={of} path={["transactionDate"]}>
         {(field) => {
-          // parseISO reads "YYYY-MM-DD" as local midnight, so the day doesn't shift.
-          const date = field.input ? parseISO(field.input) : undefined;
+          const date = field.input ? dt.toDate(field.input) : undefined;
           return (
             <Field data-invalid={field.errors !== null}>
               <FieldLabel htmlFor={`${baseId}-transactionDate`}>Fecha</FieldLabel>
@@ -261,8 +258,8 @@ export function TransactionForm({ of }: Readonly<{ of: FormStore<typeof Transact
                     />
                   }>
                   <CalendarIcon />
-                  {date ? (
-                    longDate.format(date)
+                  {field.input ? (
+                    dt.format(field.input, "PPP")
                   ) : (
                     <span className="text-muted-foreground">Selecciona una fecha</span>
                   )}
@@ -274,7 +271,7 @@ export function TransactionForm({ of }: Readonly<{ of: FormStore<typeof Transact
                     selected={date}
                     defaultMonth={date}
                     onSelect={(day) => {
-                      field.onChange(day ? format(day, "yyyy-MM-dd") : undefined);
+                      field.onChange(day ? dt.fromDate(day) : undefined);
                       setIsCalendarOpen(false);
                     }}
                   />

@@ -1,6 +1,5 @@
 import { reset, useForm } from "@formisch/react";
 import type { DeepPartial, SubmitHandler } from "@formisch/react";
-import { format } from "date-fns";
 import { useAction } from "next-safe-action/hooks";
 import { useState } from "react";
 import type * as v from "valibot";
@@ -8,12 +7,13 @@ import type * as v from "valibot";
 import { toast } from "@/components/ui/toast";
 import { createTransaction } from "@/features/transactions/actions/create-transaction";
 import { TransactionSchema } from "@/features/transactions/schemas/transaction-schema";
+import { dt } from "@/lib/date";
 import { mapToFormischErrors } from "@/lib/form-errors";
 
 type FinancialTransactionInput = DeepPartial<v.InferInput<typeof TransactionSchema>>;
 
 export function useCreateTransaction(initialInput?: FinancialTransactionInput) {
-  const [today] = useState(() => format(new Date(), "yyyy-MM-dd"));
+  const [today] = useState(() => dt.today());
   const [open, setOpen] = useState(false);
 
   const form = useForm({
