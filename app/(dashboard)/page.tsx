@@ -10,7 +10,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Progress, ProgressLabel, ProgressValue } from "@/components/ui/progress";
 import { verifySession } from "@/features/auth/dal";
 import { BalanceCard } from "@/features/dashboard/components/balance-card";
 import { DateRangeFilter } from "@/features/dashboard/components/date-range-filter";
@@ -23,19 +22,10 @@ import { CreateTransactionDrawerDialog } from "@/features/transactions/component
 import { LatestTransactionsTable } from "@/features/transactions/components/latest-transactions-table/latest-transactions-table";
 import { TransactionsTableErrorBoundary } from "@/features/transactions/components/transactions-table-error-boundary";
 import { TransactionsTableSkeleton } from "@/features/transactions/components/transactions-table-skeleton";
-import { formatCents } from "@/utils/currency";
 
 export const metadata: Metadata = {
   title: "Resumen · My Money",
 };
-
-// Sample data until the DB is wired up.
-const budgets = [
-  { category: "Comida", spentCents: 432_000, limitCents: 600_000 },
-  { category: "Transporte", spentCents: 185_000, limitCents: 250_000 },
-  { category: "Entretenimiento", spentCents: 140_000, limitCents: 150_000 },
-  { category: "Suscripciones", spentCents: 59_900, limitCents: 80_000 },
-];
 
 export default async function DashboardPage({ searchParams }: Readonly<PageProps<"/">>) {
   await verifySession();
@@ -78,7 +68,7 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
         </div>
 
         <div className="grid gap-4 lg:grid-cols-3">
-          <Card className="lg:col-span-2">
+          <Card className="lg:col-span-3">
             <CardHeader>
               <CardTitle>Transacciones recientes</CardTitle>
               <CardDescription>
@@ -96,30 +86,6 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
                   <LatestTransactionsTable />
                 </Suspense>
               </TransactionsTableErrorBoundary>
-            </CardContent>
-          </Card>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>Presupuestos</CardTitle>
-              <CardDescription>Gasto de octubre por categoría.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col gap-6">
-                {budgets.map((budget) => (
-                  <div key={budget.category} className="flex flex-col gap-2">
-                    <Progress
-                      locale="es-MX"
-                      value={Math.round((budget.spentCents / budget.limitCents) * 100)}>
-                      <ProgressLabel>{budget.category}</ProgressLabel>
-                      <ProgressValue />
-                    </Progress>
-                    <span className="text-xs text-muted-foreground tabular-nums">
-                      {formatCents(budget.spentCents)} de {formatCents(budget.limitCents)}
-                    </span>
-                  </div>
-                ))}
-              </div>
             </CardContent>
           </Card>
         </div>
