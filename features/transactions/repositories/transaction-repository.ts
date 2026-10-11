@@ -16,6 +16,14 @@ const {
   ...returnedColumns
 } = getTableColumns(transactions);
 
+// `createdAt` breaks ties on the same day; `id` makes the order total, so offset pages
+// never repeat or skip rows.
+const newestFirst = [
+  desc(transactions.transactionDate),
+  desc(transactions.createdAt),
+  desc(transactions.id),
+];
+
 /** @lintignore */
 export class DrizzleTransactionRepository implements TransactionRepository {
   constructor(private readonly database: typeof db) {}
@@ -36,20 +44,31 @@ export class DrizzleTransactionRepository implements TransactionRepository {
   }
 
   findLatest(userId: string, range: DateRange | null, limit: number) {
-    return (
-      this.database
-        .select(returnedColumns)
-        .from(transactions)
-        .where(
-          and(
-            eq(transactions.userId, userId),
-            range ? between(transactions.transactionDate, range.from, range.to) : undefined,
-          ),
-        )
-        // `createdAt` breaks ties between transactions on the same day.
-        .orderBy(desc(transactions.transactionDate), desc(transactions.createdAt))
-        .limit(limit)
-    );
+    return this.database
+      .select(returnedColumns)
+      .from(transactions)
+      .where(
+        and(
+          eq(transactions.userId, userId),
+          range ? between(transactions.transactionDate, range.from, range.to) : undefined,
+        ),
+      )
+      .orderBy(...newestFirst)
+      .limit(limit);
+  }
+
+  findPage(userId: string, limit: number, offset: number) {
+    return this.database
+      .select(returnedColumns)
+      .from(transactions)
+      .where(eq(transactions.userId, userId))
+      .orderBy(...newestFirst)
+      .limit(limit)
+      .offset(offset);
+  }
+
+  count(userId: string) {
+    return this.database.$count(transactions, eq(transactions.userId, userId));
   }
 }
 
