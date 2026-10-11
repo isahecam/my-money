@@ -4,6 +4,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 
 import { Badge } from "@/components/ui/badge";
 import { DeleteTransactionDialog } from "@/features/transactions/components/delete-transaction-dialog";
+import { EditTransactionDrawerDialog } from "@/features/transactions/components/edit-transaction-drawer-dialog";
 import { TransactionAmount } from "@/features/transactions/components/transaction-amount";
 import {
   EXPENSE_TYPE_LABELS,
@@ -76,6 +77,7 @@ export const columns = columnHelper.columns([
     id: "actions",
     cell: ({ row }) => (
       <div className="flex justify-center gap-3">
+        <EditTransactionDrawerDialog transaction={row.original} />
         <DeleteTransactionDialog transaction={row.original} />
       </div>
     ),

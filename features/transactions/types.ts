@@ -5,6 +5,9 @@ import type { Result } from "@/lib/errors/result";
 
 export type NewTransaction = typeof transactions.$inferInsert;
 
+/** Columns the user can edit; `userId` and generated fields stay out. */
+export type TransactionValues = Omit<NewTransaction, "id" | "userId" | "createdAt" | "updatedAt">;
+
 /** Transaction without internal fields (`userId`, timestamps), safe to send to the client. */
 export type TransactionDto = Omit<
   typeof transactions.$inferSelect,
@@ -26,6 +29,13 @@ export interface TransactionRepository {
   findPage(userId: string, limit: number, offset: number): Promise<TransactionDto[]>;
 
   count(userId: string): Promise<number>;
+
+  /** Updates the transaction only if it belongs to `userId`. */
+  update(
+    userId: string,
+    id: string,
+    values: TransactionValues,
+  ): Promise<Result<TransactionError, TransactionDto>>;
 
   /** Deletes the transaction only if it belongs to `userId`. */
   delete(

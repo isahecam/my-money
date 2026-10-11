@@ -8,18 +8,30 @@ import { toCents } from "@/utils/money";
 
 const MAX_PAGE_SIZE = 50;
 
+type TransactionInput = v.InferOutput<typeof TransactionSchema>;
+
+// Form input to columns, shared by create and update so both store the same shape.
+function toValues(input: TransactionInput) {
+  const { amount, ...rest } = input;
+  return {
+    ...rest,
+    amountCents: toCents(amount),
+    // Switching an expense to income must clear it, not leave the old value.
+    expenseType: input.type === "expense" ? input.expenseType : null,
+  };
+}
+
 export class TransactionService {
   constructor(private readonly repository: TransactionRepository) {}
 
   /** `userId` must come from the session, never from client input. */
-  create(userId: string, input: v.InferOutput<typeof TransactionSchema>) {
-    const { amount, ...rest } = input;
-    return this.repository.create({
-      ...rest,
-      amountCents: toCents(amount),
-      userId,
-      expenseType: input.type === "expense" ? input.expenseType : null,
-    });
+  create(userId: string, input: TransactionInput) {
+    return this.repository.create({ ...toValues(input), userId });
+  }
+
+  /** `userId` must come from the session, so users can only update their own transactions. */
+  update(userId: string, id: string, input: TransactionInput) {
+    return this.repository.update(userId, id, toValues(input));
   }
 
   /** The 10 most recent transactions within `range`, or all time when `null`. */

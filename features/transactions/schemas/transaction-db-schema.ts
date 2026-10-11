@@ -10,4 +10,7 @@ const transactionRow = createSelectSchema(transactions, {
   id: (schema) => v.message(schema, "Movimiento inválido."),
 });
 
+/** Id bound to an action next to a form (`bindArgsSchemas`). */
+export const TransactionIdSchema = transactionRow.entries.id;
+
 export const DeleteTransactionSchema = v.pick(transactionRow, ["id"]);

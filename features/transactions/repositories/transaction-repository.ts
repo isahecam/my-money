@@ -4,7 +4,11 @@ import { db } from "@/db";
 import { transactions } from "@/db/schema";
 import type { DateRange } from "@/features/dashboard/types";
 import { transactionConstraints } from "@/features/transactions/errors";
-import type { NewTransaction, TransactionRepository } from "@/features/transactions/types";
+import type {
+  NewTransaction,
+  TransactionRepository,
+  TransactionValues,
+} from "@/features/transactions/types";
 import { constraintReason } from "@/lib/errors/constraint-reason";
 import { err, ok } from "@/lib/errors/result";
 
@@ -69,6 +73,24 @@ export class DrizzleTransactionRepository implements TransactionRepository {
 
   count(userId: string) {
     return this.database.$count(transactions, eq(transactions.userId, userId));
+  }
+
+  async update(userId: string, id: string, values: TransactionValues) {
+    try {
+      const [transaction] = await this.database
+        .update(transactions)
+        .set(values)
+        .where(and(eq(transactions.id, id), eq(transactions.userId, userId)))
+        .returning(returnedColumns);
+      // No row: it was deleted or belongs to another user.
+      if (!transaction) return err({ reason: "TRANSACTION_NOT_FOUND" });
+      return ok(transaction);
+    } catch (error) {
+      const reason = constraintReason(error, transactionConstraints);
+      if (reason) return err({ reason });
+      // Unknown failures go to `handleServerError`.
+      throw error;
+    }
   }
 
   async delete(userId: string, id: string) {
