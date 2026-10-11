@@ -10,9 +10,9 @@ import { TransactionSchema } from "@/features/transactions/schemas/transaction-s
 import { dt } from "@/lib/date";
 import { mapToFormischErrors } from "@/lib/form-errors";
 
-type FinancialTransactionInput = DeepPartial<v.InferInput<typeof TransactionSchema>>;
+type TransactionInput = DeepPartial<v.InferInput<typeof TransactionSchema>>;
 
-export function useCreateTransaction(initialInput?: FinancialTransactionInput) {
+export function useCreateTransaction(initialInput?: TransactionInput) {
   const [today] = useState(() => dt.today());
   const [open, setOpen] = useState(false);
 
