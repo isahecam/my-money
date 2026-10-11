@@ -19,6 +19,6 @@ export const transactionErrors = {
 >;
 
 export const transactionConstraints = {
-  transactions_amount_positive: "TRANSACTION_AMOUNT_NOT_POSITIVE",
+  transactions_amount_cents_positive: "TRANSACTION_AMOUNT_NOT_POSITIVE",
   transactions_user_id_users_id_fk: "TRANSACTION_USER_NOT_FOUND",
 } as const satisfies Record<string, keyof typeof transactionErrors>;

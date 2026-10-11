@@ -4,6 +4,8 @@ export const PAYMENT_METHODS = ["cash", "debit_card", "credit_card", "transfer"]
 
 export const EXPENSE_TYPES = ["fixed", "variable", "ant"] as const;
 
+export const CURRENCIES = ["MXN"] as const;
+
 export const TRANSACTION_TYPE_LABELS = {
   income: "Ingreso",
   expense: "Gasto",

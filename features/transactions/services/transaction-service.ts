@@ -3,6 +3,7 @@ import type * as v from "valibot";
 import { transactionRepository } from "@/features/transactions/repositories/transaction-repository";
 import type { TransactionSchema } from "@/features/transactions/schemas/transaction-schema";
 import type { TransactionRepository } from "@/features/transactions/types";
+import { toCents } from "@/utils/money";
 
 /** @lintignore */
 export class TransactionService {
@@ -10,8 +11,10 @@ export class TransactionService {
 
   /** `userId` must come from the session, never from client input. */
   create(userId: string, input: v.InferOutput<typeof TransactionSchema>) {
+    const { amount, ...rest } = input;
     return this.repository.create({
-      ...input,
+      ...rest,
+      amountCents: toCents(amount),
       userId,
       expenseType: input.type === "expense" ? input.expenseType : null,
     });

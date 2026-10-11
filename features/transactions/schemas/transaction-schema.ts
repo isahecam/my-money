@@ -10,7 +10,8 @@ const sharedEntries = {
     v.nonEmpty("Ingresa el concepto."),
     v.maxLength(100, "El concepto debe tener como máximo 100 caracteres."),
   ),
-  // Kept as a string to match `numeric(12, 2)` without float rounding.
+  // Pesos as a string; the service converts it to cents. No transform here: the action
+  // re-parses the form output with this same schema.
   amount: v.pipe(
     v.string(),
     v.trim(),

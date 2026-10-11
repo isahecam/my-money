@@ -1,9 +1,9 @@
 import { sql } from "drizzle-orm";
 import {
+  bigint,
   check,
   date,
   index,
-  numeric,
   pgEnum,
   pgTable,
   text,
@@ -12,6 +12,7 @@ import {
 } from "drizzle-orm/pg-core";
 
 import {
+  CURRENCIES,
   EXPENSE_TYPES,
   PAYMENT_METHODS,
   TRANSACTION_TYPES,
@@ -25,6 +26,8 @@ export const paymentMethod = pgEnum("transaction_payment_method_enum", PAYMENT_M
 
 export const expenseType = pgEnum("transaction_expense_type_enum", EXPENSE_TYPES);
 
+export const currency = pgEnum("currency_enum", CURRENCIES);
+
 export const transactions = pgTable(
   "transactions",
   {
@@ -34,7 +37,8 @@ export const transactions = pgTable(
       .references(() => users.id, { onDelete: "cascade" }),
     type: transactionType("type").notNull(),
     concept: text("concept").notNull(),
-    amount: numeric("amount", { precision: 12, scale: 2 }).notNull(),
+    amountCents: bigint("amount_cents", { mode: "number" }).notNull(),
+    currency: currency("currency").notNull().default("MXN"),
     paymentMethod: paymentMethod("payment_method").notNull(),
     expenseType: expenseType("expense_type"),
     transactionDate: date("transaction_date", { mode: "string" }).notNull(),
@@ -46,7 +50,7 @@ export const transactions = pgTable(
       .notNull(),
   },
   (table) => [
-    check("transactions_amount_positive", sql`${table.amount} > 0`),
+    check("transactions_amount_cents_positive", sql`${table.amountCents} > 0`),
     index("transactions_user_date_idx").on(table.userId, table.transactionDate),
     index("transactions_user_type_idx").on(table.userId, table.type),
     index("transactions_user_payment_method_idx").on(table.userId, table.paymentMethod),
