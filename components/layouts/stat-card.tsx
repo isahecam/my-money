@@ -13,7 +13,7 @@ export function StatCard({
   range: Parameters<typeof formatDateRange>[0] | null;
 }>) {
   return (
-    <Card>
+    <Card className="@container/card">
       <CardHeader>
         <CardDescription>{title}</CardDescription>
         <CardTitle>

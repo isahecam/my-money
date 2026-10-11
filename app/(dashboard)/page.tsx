@@ -101,7 +101,7 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
           <DateRangeFilter />
         </div>
 
-        <div className="grid gap-4 md:grid-cols-3">
+        <div className="grid gap-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card md:grid-cols-3 @xl/main:grid-cols-2 @5xl/main:grid-cols-4 dark:*:data-[slot=card]:bg-card">
           <StatCardErrorBoundary
             key={`income|${from}|${to}`}
             title={hasRange ? "Ingresos" : "Ingresos totales"}>
@@ -109,6 +109,7 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
               <IncomeCard />
             </Suspense>
           </StatCardErrorBoundary>
+
           <StatCardErrorBoundary
             key={`expenses|${from}|${to}`}
             title={hasRange ? "Gastos" : "Gastos totales"}>
@@ -116,6 +117,7 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
               <ExpenseCard />
             </Suspense>
           </StatCardErrorBoundary>
+
           <StatCardErrorBoundary
             key={`balance|${from}|${to}`}
             title={hasRange ? "Balance" : "Balance total"}>
