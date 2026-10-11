@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { SiteHeader } from "@/components/site-header";
-import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardAction,
@@ -12,14 +11,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Progress, ProgressLabel, ProgressValue } from "@/components/ui/progress";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { verifySession } from "@/features/auth/dal";
 import { BalanceCard } from "@/features/dashboard/components/balance-card";
 import { DateRangeFilter } from "@/features/dashboard/components/date-range-filter";
@@ -29,7 +20,9 @@ import { StatCardErrorBoundary } from "@/features/dashboard/components/stat-card
 import { StatCardSkeleton } from "@/features/dashboard/components/stat-card-skeleton";
 import { resolveDateRange, searchParamsCache } from "@/features/dashboard/lib/search-params";
 import { CreateTransactionDrawerDialog } from "@/features/transactions/components/create-transaction-drawer-dialog";
-import { dt } from "@/lib/date";
+import { LatestTransactionsErrorBoundary } from "@/features/transactions/components/latest-transactions-error-boundary";
+import { LatestTransactionsSkeleton } from "@/features/transactions/components/latest-transactions-skeleton";
+import { LatestTransactionsTable } from "@/features/transactions/components/latest-transactions-table";
 import { formatCents } from "@/utils/currency";
 
 export const metadata: Metadata = {
@@ -37,49 +30,6 @@ export const metadata: Metadata = {
 };
 
 // Sample data until the DB is wired up.
-const transactions = [
-  {
-    id: 1,
-    date: "2026-10-07",
-    description: "Supermercado",
-    category: "Comida",
-    account: "Débito",
-    amountCents: -124_530,
-  },
-  {
-    id: 2,
-    date: "2026-10-06",
-    description: "Nómina",
-    category: "Salario",
-    account: "Débito",
-    amountCents: 1_600_000,
-  },
-  {
-    id: 3,
-    date: "2026-10-05",
-    description: "Netflix",
-    category: "Suscripciones",
-    account: "Crédito",
-    amountCents: -29_900,
-  },
-  {
-    id: 4,
-    date: "2026-10-04",
-    description: "Gasolina",
-    category: "Transporte",
-    account: "Crédito",
-    amountCents: -85_000,
-  },
-  {
-    id: 5,
-    date: "2026-10-02",
-    description: "Renta",
-    category: "Vivienda",
-    account: "Débito",
-    amountCents: -950_000,
-  },
-];
-
 const budgets = [
   { category: "Comida", spentCents: 432_000, limitCents: 600_000 },
   { category: "Transporte", spentCents: 185_000, limitCents: 250_000 },
@@ -101,7 +51,15 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
           <DateRangeFilter />
         </div>
 
-        <div className="grid gap-4 *:data-[slot=card]:bg-linear-to-t *:data-[slot=card]:from-primary/5 *:data-[slot=card]:to-card @3xl/main:grid-cols-3 dark:*:data-[slot=card]:bg-card">
+        <div className="grid gap-4 @3xl/main:grid-cols-3">
+          <StatCardErrorBoundary
+            key={`balance|${from}|${to}`}
+            title={hasRange ? "Balance" : "Balance total"}>
+            <Suspense fallback={<StatCardSkeleton />}>
+              <BalanceCard />
+            </Suspense>
+          </StatCardErrorBoundary>
+
           <StatCardErrorBoundary
             key={`income|${from}|${to}`}
             title={hasRange ? "Ingresos" : "Ingresos totales"}>
@@ -117,59 +75,27 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
               <ExpenseCard />
             </Suspense>
           </StatCardErrorBoundary>
-
-          <StatCardErrorBoundary
-            key={`balance|${from}|${to}`}
-            title={hasRange ? "Balance" : "Balance total"}>
-            <Suspense fallback={<StatCardSkeleton />}>
-              <BalanceCard />
-            </Suspense>
-          </StatCardErrorBoundary>
         </div>
 
         <div className="grid gap-4 lg:grid-cols-3">
           <Card className="lg:col-span-2">
             <CardHeader>
               <CardTitle>Transacciones recientes</CardTitle>
-              <CardDescription>Los últimos movimientos de tus cuentas.</CardDescription>
+              <CardDescription>
+                {hasRange
+                  ? "Los últimos movimientos del periodo."
+                  : "Los últimos movimientos de tus cuentas."}
+              </CardDescription>
               <CardAction>
                 <CreateTransactionDrawerDialog />
               </CardAction>
             </CardHeader>
             <CardContent>
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Fecha</TableHead>
-                    <TableHead>Descripción</TableHead>
-                    <TableHead className="hidden md:table-cell">Categoría</TableHead>
-                    <TableHead className="hidden md:table-cell">Cuenta</TableHead>
-                    <TableHead className="text-right">Monto</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {transactions.map((tx) => (
-                    <TableRow key={tx.id}>
-                      <TableCell>
-                        <span className="text-muted-foreground">{dt.format(tx.date, "d MMM")}</span>
-                      </TableCell>
-                      <TableCell>
-                        <span className="font-medium">{tx.description}</span>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">
-                        <Badge variant="secondary">{tx.category}</Badge>
-                      </TableCell>
-                      <TableCell className="hidden md:table-cell">{tx.account}</TableCell>
-                      <TableCell className="text-right">
-                        <span className="tabular-nums">
-                          {tx.amountCents > 0 && "+"}
-                          {formatCents(tx.amountCents)}
-                        </span>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
+              <LatestTransactionsErrorBoundary key={`latest|${from}|${to}`}>
+                <Suspense fallback={<LatestTransactionsSkeleton />}>
+                  <LatestTransactionsTable />
+                </Suspense>
+              </LatestTransactionsErrorBoundary>
             </CardContent>
           </Card>
 

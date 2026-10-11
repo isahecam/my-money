@@ -46,7 +46,7 @@ Use pnpm only.
   - Each filter is its own Client Component that only reads and writes the URL, through the feature's `useFilters` hook (`useQueryStates` with `shallow: false`, so the server re-renders). Navigation options like `history` are passed by the component.
   - Dates travel as `YYYY-MM-DD` strings (`parseAsDateString`), never `parseAsIsoDate` (UTC midnight shifts the day). Convert to `Date` only at the edge with third-party components (`dt.toDate` / `dt.fromDate`).
 - **Forms**: Formisch (`@formisch/react`) with Valibot schemas.
-- The dashboard still uses hard-coded sample data for recent transactions and budgets; the stat cards (income, expenses, balance) are real and share `StatCard` in `components/layouts/`.
+- The dashboard still uses hard-coded sample data for budgets; the stat cards (income, expenses, balance) are real and share `StatCard` in `components/layouts/`, and the recent transactions table (`LatestTransactionsTable`, TanStack Table v9 per `docs/DATA_TABLES.md`) shows the latest 10 within the date range.
 
 ## Comments and language
 
