@@ -1,3 +1,7 @@
+# The repo doesn't use Git LFS. Without this, lefthook runs `git-lfs pre-push`, which opens extra
+# SSH connections to the remote (each one asks for the key passphrase).
+skip_lfs: true
+
 pre-commit:
   piped: true
   jobs:
