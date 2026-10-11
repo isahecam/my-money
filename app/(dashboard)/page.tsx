@@ -20,9 +20,9 @@ import { StatCardErrorBoundary } from "@/features/dashboard/components/stat-card
 import { StatCardSkeleton } from "@/features/dashboard/components/stat-card-skeleton";
 import { resolveDateRange, searchParamsCache } from "@/features/dashboard/lib/search-params";
 import { CreateTransactionDrawerDialog } from "@/features/transactions/components/create-transaction-drawer-dialog";
-import { LatestTransactionsErrorBoundary } from "@/features/transactions/components/latest-transactions-error-boundary";
-import { LatestTransactionsSkeleton } from "@/features/transactions/components/latest-transactions-skeleton";
-import { LatestTransactionsTable } from "@/features/transactions/components/latest-transactions-table";
+import { LatestTransactionsTable } from "@/features/transactions/components/latest-transactions-table/latest-transactions-table";
+import { TransactionsTableErrorBoundary } from "@/features/transactions/components/transactions-table-error-boundary";
+import { TransactionsTableSkeleton } from "@/features/transactions/components/transactions-table-skeleton";
 import { formatCents } from "@/utils/currency";
 
 export const metadata: Metadata = {
@@ -91,11 +91,11 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
               </CardAction>
             </CardHeader>
             <CardContent>
-              <LatestTransactionsErrorBoundary key={`latest|${from}|${to}`}>
-                <Suspense fallback={<LatestTransactionsSkeleton />}>
+              <TransactionsTableErrorBoundary key={`latest|${from}|${to}`}>
+                <Suspense fallback={<TransactionsTableSkeleton />}>
                   <LatestTransactionsTable />
                 </Suspense>
-              </LatestTransactionsErrorBoundary>
+              </TransactionsTableErrorBoundary>
             </CardContent>
           </Card>
 

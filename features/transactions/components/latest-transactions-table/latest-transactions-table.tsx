@@ -1,8 +1,8 @@
 import { resolveDateRange, searchParamsCache } from "@/features/dashboard/lib/search-params";
 import { getLatestTransactions } from "@/features/transactions/queries/get-latest-transactions";
 
-import { columns } from "./transactions-table/columns";
-import { DataTable } from "./transactions-table/data-table";
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
 
 export async function LatestTransactionsTable() {
   const range = resolveDateRange(searchParamsCache.all());
