@@ -2,39 +2,89 @@
   <img alt="Banner" src="https://shieldcn.dev/header/gradient.svg?title=My+Money&amp;subtitle=A+personal+finance+app.&amp;logo=lu%3AWallet&amp;mode=dark&amp;border=false" />
 </p>
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+<p align="center">
+  <a href="https://isahecam.dev"><img alt="Website" src="https://shieldcn.dev/badge/isahecam.dev-c96442.svg?size=xs&amp;variant=secondary&amp;logo=lu%3AGlobe" /></a>
+  <a href="https://github.com/isahecam/my-money/commits/main"><img alt="Last commit" src="https://shieldcn.dev/github/last-commit/isahecam/my-money.svg?size=xs&amp;variant=secondary" /></a>
+  <a href="https://github.com/isahecam/my-money/stargazers"><img alt="GitHub stars" src="https://shieldcn.dev/github/stars/isahecam/my-money.svg?size=xs&amp;variant=secondary" /></a>
+</p>
+
+## Overview
+
+My Money is a personal finance app to track income and expenses. The dashboard shows income, expense and balance cards plus the latest transactions for a date range. The transactions page lists every transaction with server pagination, editing and deletion. Access is invite-only (email and password), and the UI is in Spanish.
+
+## Built With
+
+- [Next.js 16](https://nextjs.org) (App Router)
+- [React 19](https://react.dev) with the [React Compiler](https://react.dev/learn/react-compiler)
+- [TypeScript](https://www.typescriptlang.org)
+- [Tailwind CSS v4](https://tailwindcss.com)
+- [shadcn/ui](https://ui.shadcn.com) on [Base UI](https://base-ui.com), with [Lucide](https://lucide.dev) icons
+- [TanStack Table](https://tanstack.com/table)
+- [Neon](https://neon.com) Postgres with [Drizzle ORM](https://orm.drizzle.team)
+- [Better Auth](https://better-auth.com)
+- [next-safe-action](https://next-safe-action.dev)
+- [nuqs](https://nuqs.dev)
+- [Formisch](https://formisch.dev) and [Valibot](https://valibot.dev)
+- [date-fns](https://date-fns.org)
+- [Vitest](https://vitest.dev) and [Testing Library](https://testing-library.com)
+- [Oxc](https://oxc.rs) (oxlint, oxfmt), [Knip](https://knip.dev) and [Lefthook](https://lefthook.dev)
+- [pnpm](https://pnpm.io)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js
+- pnpm 12
+- A [Neon](https://neon.com) Postgres database
+
+### 1. Install
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/isahecam/my-money.git
+cd my-money
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure the environment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Create a `.env` file in the project root:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```dotenv
+BETTER_AUTH_SECRET=your-secret
+BETTER_AUTH_URL=http://localhost:3000
+DATABASE_URL=postgresql://...        # pooled connection, used by the app
+DATABASE_URL_UNPOOLED=postgresql://... # direct connection, used by drizzle-kit
+NEXT_PUBLIC_APP_TIMEZONE=America/Mexico_City # IANA zone that resolves "today"
+```
 
-## Learn More
+### 3. Set up the database
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+pnpm db:migrate
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### 4. Run the app
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+pnpm dev
+```
 
-## Deploy on Vercel
+Open [http://localhost:3000](http://localhost:3000).
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| Command            | Description                                 |
+| ------------------ | ------------------------------------------- |
+| `pnpm dev`         | Start the development server                |
+| `pnpm build`       | Build for production                        |
+| `pnpm test --run`  | Run the tests once                          |
+| `pnpm typecheck`   | Generate route types and type-check         |
+| `pnpm lint`        | Lint with oxlint                            |
+| `pnpm fmt`         | Format with oxfmt                           |
+| `pnpm knip`        | Find unused files, exports and dependencies |
+| `pnpm db:generate` | Generate a migration after a schema change  |
+
+## Contact
+
+Questions, ideas or feedback? Contact me through my [website](https://isahecam.dev), on [GitHub](https://github.com/isahecam) or on [X](https://x.com/isahecam).
