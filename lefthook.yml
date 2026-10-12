@@ -2,10 +2,6 @@
 # SSH connections to the remote (each one asks for the key passphrase).
 skip_lfs: true
 
-# In the Windows console (Git Bash), the spinner redrawing alongside the parallel pre-push jobs
-# hangs the hook.
-no_tty: true
-
 pre-commit:
   piped: true
   jobs:
@@ -24,8 +20,9 @@ commit-msg:
     - name: commitlint
       run: pnpm commitlint --edit {1}
 
+# Sequential on purpose: on Windows, `parallel: true` hangs the hook in the terminal after the jobs
+# finish (https://github.com/evilmartians/lefthook/issues/1256).
 pre-push:
-  parallel: true
   jobs:
     - name: typecheck
       run: pnpm typecheck
