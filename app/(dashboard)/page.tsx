@@ -68,8 +68,8 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
               <CardTitle>Transacciones recientes</CardTitle>
               <CardDescription>
                 {hasRange
-                  ? "Los últimos movimientos del periodo."
-                  : "Los últimos movimientos de tus cuentas."}
+                  ? "Tus últimos movimientos del periodo."
+                  : "Tus últimos movimientos de tu cuenta."}
               </CardDescription>
             </CardHeader>
             <CardContent>
