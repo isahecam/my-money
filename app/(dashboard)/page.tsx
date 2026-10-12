@@ -2,14 +2,8 @@ import type { Metadata } from "next";
 import { Suspense } from "react";
 
 import { SiteHeader } from "@/components/site-header";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Field } from "@/components/ui/field";
 import { verifySession } from "@/features/auth/dal";
 import { BalanceCard } from "@/features/dashboard/components/balance-card";
 import { DateRangeFilter } from "@/features/dashboard/components/date-range-filter";
@@ -37,7 +31,10 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
       <SiteHeader title="Resumen" />
 
       <section className="@container/main flex flex-1 flex-col gap-6 p-4 pt-0">
-        <DateRangeFilter />
+        <Field orientation="horizontal" className="flex-wrap sm:justify-end">
+          <CreateTransactionDrawerDialog />
+          <DateRangeFilter />
+        </Field>
 
         <div className="grid gap-4 @3xl/main:grid-cols-3">
           <StatCardErrorBoundary
@@ -74,9 +71,6 @@ export default async function DashboardPage({ searchParams }: Readonly<PageProps
                   ? "Los últimos movimientos del periodo."
                   : "Los últimos movimientos de tus cuentas."}
               </CardDescription>
-              <CardAction>
-                <CreateTransactionDrawerDialog />
-              </CardAction>
             </CardHeader>
             <CardContent>
               <TransactionsTableErrorBoundary key={`latest|${from}|${to}`}>
