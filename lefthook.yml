@@ -2,6 +2,10 @@
 # SSH connections to the remote (each one asks for the key passphrase).
 skip_lfs: true
 
+# In the Windows console (Git Bash), the spinner redrawing alongside the parallel pre-push jobs
+# hangs the hook.
+no_tty: true
+
 pre-commit:
   piped: true
   jobs:
