@@ -1,4 +1,6 @@
-![My Money](https://shieldcn.dev/header/dots.svg?title=My+Money&subtitle=A+personal+finance+app.&logo=lu%3AWallet&logoColor=c96442&mode=dark&theme=orange&brand=Hecam%27s+Corp)
+<p align="center">
+  <img alt="Banner" src="https://shieldcn.dev/header/gradient.svg?title=My+Money&amp;subtitle=A+personal+finance+app.&amp;logo=lu%3AWallet&amp;mode=dark&amp;border=false" />
+</p>
 
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
