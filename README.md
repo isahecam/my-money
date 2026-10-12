@@ -1,3 +1,5 @@
+![My Money](https://shieldcn.dev/header/dots.svg?title=My+Money&subtitle=A+personal+finance+app.&logo=lu%3AWallet&logoColor=c96442&mode=dark&theme=orange&brand=Hecam%27s+Corp)
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
 ## Getting Started
