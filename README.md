@@ -56,6 +56,8 @@ BETTER_AUTH_URL=http://localhost:3000
 DATABASE_URL=postgresql://...        # pooled connection, used by the app
 DATABASE_URL_UNPOOLED=postgresql://... # direct connection, used by drizzle-kit
 NEXT_PUBLIC_APP_TIMEZONE=America/Mexico_City # IANA zone that resolves "today"
+RESEND_API_KEY=re_...                # sends password reset emails
+EMAIL_FROM="My Money <no-reply@example.com>" # sender, on a domain verified in Resend
 ```
 
 ### 3. Set up the database
