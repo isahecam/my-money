@@ -1,7 +1,7 @@
 import { getSessionCookie } from "better-auth/cookies";
 import { NextRequest, NextResponse } from "next/server";
 
-const publicRoutes = new Set(["/sign-in"]);
+const publicRoutes = new Set(["/sign-in", "/forgot-password", "/reset-password"]);
 
 // Optimistic check: only looks for the cookie, no DB. Pages do the real check.
 export function proxy(request: NextRequest) {
