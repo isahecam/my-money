@@ -1,6 +1,7 @@
 "use client";
 
 import { Form, Field as FormischField } from "@formisch/react";
+import Link from "next/link";
 
 import { PasswordInput } from "@/components/customs/password-input";
 import { Button } from "@/components/ui/button";
@@ -36,7 +37,14 @@ export function SignInForm() {
         <FormischField of={form} path={["password"]}>
           {(field) => (
             <Field data-invalid={field.errors !== null}>
-              <FieldLabel htmlFor="sign-in-password">Contraseña</FieldLabel>
+              <div className="flex items-center">
+                <FieldLabel htmlFor="sign-in-password">Contraseña</FieldLabel>
+                <Link
+                  href="/forgot-password"
+                  className="ml-auto inline-block text-sm underline-offset-4 hover:underline">
+                  ¿Olvidaste tu contraseña?
+                </Link>
+              </div>
               <PasswordInput
                 {...field.props}
                 id="sign-in-password"
