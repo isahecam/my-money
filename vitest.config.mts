@@ -9,7 +9,12 @@ export default defineConfig({
     environment: "jsdom",
     setupFiles: ["./vitest.setup.ts"],
     // Fixed so date tests give the same result on every machine.
-    env: { NEXT_PUBLIC_APP_TIMEZONE: "America/Mexico_City" },
+    // Email values are placeholders: `lib/email` requires them on import, and tests never send.
+    env: {
+      NEXT_PUBLIC_APP_TIMEZONE: "America/Mexico_City",
+      RESEND_API_KEY: "re_test",
+      EMAIL_FROM: "My Money <no-reply@example.com>",
+    },
     // Its ESM build imports `next/headers` without an extension, which Node can't resolve.
     server: { deps: { inline: ["@next-safe-action/adapter-better-auth"] } },
   },
