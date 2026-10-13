@@ -19,5 +19,16 @@
     "shadcn/require-static-classes": "error"
   },
   "env": { "browser": true, "node": true },
-  "ignorePatterns": ["drizzle/**", "components/ui/**"]
+  "ignorePatterns": ["drizzle/**", "components/ui/**", "components/email/**"],
+  "overrides": [
+    {
+      "files": ["features/*/emails/**"],
+      "rules": {
+        "shadcn/no-arbitrary-values": "off",
+        "shadcn/no-raw-colors": "off",
+        "shadcn/no-restyle": "off",
+        "shadcn/no-unknown-classes": "off"
+      }
+    }
+  ]
 }

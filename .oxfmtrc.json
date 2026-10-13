@@ -1,6 +1,6 @@
 {
   "$schema": "./node_modules/oxfmt/configuration_schema.json",
-  "ignorePatterns": [".agents", ".claude/skills", "drizzle", "components/ui"],
+  "ignorePatterns": [".agents", ".claude/skills", "drizzle", "components/ui", "components/email"],
   "sortImports": true,
   "bracketSameLine": true,
   "sortTailwindcss": {
