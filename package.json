@@ -34,7 +34,7 @@
     "drizzle-orm": "^0.45.3",
     "drizzle-valibot": "^0.4.2",
     "lucide-react": "^1.52.0",
-    "next": "16.4.0",
+    "next": "16.4.3",
     "next-safe-action": "^8.7.3",
     "nuqs": "^2.10.2",
     "react": "19.3.0",
