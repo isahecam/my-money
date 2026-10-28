@@ -13,7 +13,8 @@ import {
 import { ResetPasswordForm } from "@/features/auth/components/reset-password-form";
 
 export const metadata: Metadata = {
-  title: "Restablecer contraseña · My Money",
+  title: "Restablecer contraseña",
+  description: "Crea una nueva contraseña para ingresar a tu cuenta.",
 };
 
 // No session redirect: the emailed link must work even if this browser is signed in.
