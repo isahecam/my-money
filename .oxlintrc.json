@@ -29,6 +29,14 @@
         "shadcn/no-restyle": "off",
         "shadcn/no-unknown-classes": "off"
       }
+    },
+    {
+      "files": ["components/og/**", "app/**/opengraph-image.tsx"],
+      "rules": {
+        "nextjs/no-img-element": "off",
+        "shadcn/no-inline-styles": "off",
+        "shadcn/no-raw-colors": "off"
+      }
     }
   ]
 }

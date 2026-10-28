@@ -6,7 +6,8 @@ import { SignInForm } from "@/features/auth/components/sign-in-form";
 import { getSession } from "@/features/auth/dal";
 
 export const metadata: Metadata = {
-  title: "Iniciar sesión · My Money",
+  title: "Iniciar sesión",
+  description: "Ingresa con tu correo y contraseña para acceder a My Money.",
 };
 
 export default async function SignInPage() {

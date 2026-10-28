@@ -13,7 +13,7 @@ describe("PasswordResetEmail", async () => {
       name="Ana"
       resetUrl={resetUrl}
       expiresInMinutes={60}
-      logoUrl="https://example.com/email/logo.png"
+      logoUrl="https://example.com/static/logo.png"
       homeUrl="https://example.com"
     />,
   );
@@ -28,7 +28,7 @@ describe("PasswordResetEmail", async () => {
   });
 
   it("shows the logo from an absolute URL, linked to the app", () => {
-    expect(html).toContain('src="https://example.com/email/logo.png"');
+    expect(html).toContain('src="https://example.com/static/logo.png"');
     expect(html).toContain('alt="My Money"');
     expect(html).toContain('href="https://example.com"');
   });

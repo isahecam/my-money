@@ -16,5 +16,8 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  // Metadata files and public/static must load without a session (crawlers, link previews, email clients).
+  matcher: [
+    "/((?!api|_next/static|_next/image|static/|favicon.ico|icon.svg|apple-icon.png|opengraph-image|manifest.webmanifest|robots.txt).*)",
+  ],
 };

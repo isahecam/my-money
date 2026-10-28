@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist_Mono, Outfit } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 
@@ -15,8 +15,36 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "My Money",
-  description: "Mi aplicación de finanzas personales",
+  metadataBase: new URL("https://finances.isahecam.com"),
+  title: {
+    default: "My Money",
+    template: "%s | My Money",
+  },
+  description: "Mi aplicación de finanzas personales.",
+  openGraph: {
+    title: "My Money",
+    description: "Mi aplicación de finanzas personales.",
+    url: "/",
+    siteName: "My Money",
+    locale: "es_MX",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "My Money",
+    description: "Mi aplicación de finanzas personales.",
+  },
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ede9de" },
+    { media: "(prefers-color-scheme: dark)", color: "#3d3929" },
+  ],
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
