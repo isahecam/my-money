@@ -6,7 +6,8 @@ import { ForgotPasswordForm } from "@/features/auth/components/forgot-password-f
 import { getSession } from "@/features/auth/dal";
 
 export const metadata: Metadata = {
-  title: "Recuperar contraseña · My Money",
+  title: "Recuperación de contraseña",
+  description: "Ingresa tu correo y te enviaremos un enlace para crear una nueva.",
 };
 
 export default async function ForgotPasswordPage() {
