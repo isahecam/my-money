@@ -29,7 +29,7 @@ describe("AuthEmailService", () => {
           name: "Ana",
           resetUrl: "https://example.com/reset",
           expiresInMinutes: 60,
-          logoUrl: "https://example.com/email/logo.png",
+          logoUrl: "https://example.com/static/logo.png",
           homeUrl: "https://example.com",
         },
       }),

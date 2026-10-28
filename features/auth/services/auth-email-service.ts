@@ -22,7 +22,7 @@ export class AuthEmailService {
         name: user.name,
         resetUrl,
         expiresInMinutes: RESET_PASSWORD_TOKEN_EXPIRES_IN / 60,
-        logoUrl: `${origin}/email/logo.png`,
+        logoUrl: `${origin}/static/logo.png`,
         homeUrl: origin,
       })
       .build();
