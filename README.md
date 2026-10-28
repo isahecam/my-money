@@ -48,6 +48,8 @@ pnpm install
 
 ### 2. Configure the environment
 
+Provide the variables below either with a local `.env` file or through a secrets manager ([Infisical](#using-infisical)).
+
 Create a `.env` file in the project root:
 
 ```dotenv
@@ -74,18 +76,62 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
+### Using Infisical
+
+Instead of a `.env` file, the variables can live in [Infisical](https://infisical.com). The CLI injects them into the process at runtime, so nothing is written to disk. The project is already linked through `.infisical.yaml`, so there is no need to run `infisical init`.
+
+1. [Install the CLI](https://infisical.com/docs/cli/overview):
+
+   ```bash
+   brew install infisical/get-cli/infisical   # macOS
+   scoop install infisical                    # Windows
+   npm install -g @infisical/cli              # any platform
+   ```
+
+2. Log in (opens the browser):
+
+   ```bash
+   infisical login
+   ```
+
+3. In the Infisical project, add the [variables above](#2-configure-the-environment) to the `dev` and `prod` environments.
+
+4. Run the app with the `:secrets` scripts:
+
+   ```bash
+   pnpm dev:secrets                       # dev environment
+   pnpm build:secrets && pnpm start:secrets # prod environment
+   ```
+
+   Any other command that needs the variables goes through `infisical run`:
+
+   ```bash
+   infisical run --env=dev -- pnpm db:migrate
+   ```
+
+In CI or on a server, where there's no browser, [authenticate with a machine identity](https://infisical.com/docs/documentation/platform/identities/universal-auth) and expose its token as `INFISICAL_TOKEN`:
+
+```bash
+export INFISICAL_TOKEN=$(infisical login --method=universal-auth \
+  --client-id=<client-id> --client-secret=<client-secret> --silent --plain)
+pnpm build:secrets
+```
+
 ### Scripts
 
-| Command            | Description                                 |
-| ------------------ | ------------------------------------------- |
-| `pnpm dev`         | Start the development server                |
-| `pnpm build`       | Build for production                        |
-| `pnpm test --run`  | Run the tests once                          |
-| `pnpm typecheck`   | Generate route types and type-check         |
-| `pnpm lint`        | Lint with oxlint                            |
-| `pnpm fmt`         | Format with oxfmt                           |
-| `pnpm knip`        | Find unused files, exports and dependencies |
-| `pnpm db:generate` | Generate a migration after a schema change  |
+| Command              | Description                                         |
+| -------------------- | --------------------------------------------------- |
+| `pnpm dev`           | Start the development server                        |
+| `pnpm build`         | Build for production                                |
+| `pnpm test --run`    | Run the tests once                                  |
+| `pnpm typecheck`     | Generate route types and type-check                 |
+| `pnpm lint`          | Lint with oxlint                                    |
+| `pnpm fmt`           | Format with oxfmt                                   |
+| `pnpm knip`          | Find unused files, exports and dependencies         |
+| `pnpm db:generate`   | Generate a migration after a schema change          |
+| `pnpm dev:secrets`   | `pnpm dev` with secrets from Infisical (`dev`)      |
+| `pnpm build:secrets` | `pnpm build` with secrets from Infisical (`prod`)   |
+| `pnpm start:secrets` | Start the production server with Infisical (`prod`) |
 
 ## Contact
 
