@@ -43,8 +43,8 @@ export const transactions = pgTable(
     expenseType: expenseType("expense_type"),
     transactionDate: date("transaction_date", { mode: "string" }).notNull(),
     notes: text("notes"),
-    createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at")
+    createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
       .defaultNow()
       .$onUpdate(() => new Date())
       .notNull(),
